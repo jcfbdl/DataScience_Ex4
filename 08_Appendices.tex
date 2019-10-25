@@ -3,369 +3,172 @@
 \chapter{R-code - Exercise 1}
 
 \begin{verbatim}
-##########################################################################
-# HEC Lausanne - MScF
-# Data Science for Finance
-# Exercise Session 3 - 14.10.2019
-# Marceau Pierron, Taulant Ukshini, David Sasselli, Nora Koennyu
-##########################################################################
+# sampling t-distributed observations
+returns=rt(10000,10)
 
-X=read.delim("datalausanneequity.csv",sep=";",header=FALSE)
-X=diff(as.matrix(log(X)),1)
+# Creating a criterion function with W=I
+criterion_I<-function(para,x)
+  {
+    nu=para
+    cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
+    cond2=mean(x^2)-(nu/(nu-2))
+    # output=y^Ty
+    output=matrix(c(cond1,cond2),1,2)
+    return(output%*%t(output))
+  }
 
-#Markowitz
-mu=apply(X,2,mean)
-sigma=cov(X)
-sigmainv=solve(sigma)
-gamma=3
-w=1/gamma*sigmainv%*%mu
-#rP=X%*%w
-#P=cumprod(1+rP)
-#plot(P)
+# Creating a criterion function with the full W
+criterion_W<-function(para,x)
+  {
+    nu=para
+    cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
+    cond2=mean(x^2)-(nu/(nu-2))
+    W=cov(cbind(x^2/sqrt(length(x)),x^4/sqrt(length(x))))
+    output=matrix(c(cond1,cond2),1,2)
+    return(output%*%solve(W)%*%t(output))
+  }
 
-#subsampling
-wtotal=c()             #creates a vector to stock the weights
-wsigma=c()
-wmu=c()
-count=0                 #counter defined and set to 0
-for (i in 1:1000)        #starts a 500 rounds boucle
+# Setting a potential list of candidate estimates
+para_list=seq(5,30,by=1)
+
+
+
+#USING IDENTITY
+# Computing the criterion function for each estimate...
+output_1=c()
+for (i in 1:length(para_list))
+  {
+    output_1=c(output_1,criterion_I(para_list[i],returns))
+  }
+
+#... and then graph them!
+pdf(file="Graph1_1.pdf")
+plot(para_list,output_1,type="l",xlab="nu",ylab="Criterion",main="W=I")
+dev.off()
+
+# Finding the minimum value
+minimum_1=para_list[which(output_1==min(output_1))]
+print(minimum_1)
+
+# And charting the resulting density
+pdf(file="Graph1_2.pdf")
+temp=density(scale(returns))
+plot(temp, type="l", ylab="Density", main="")
+lines(temp$x,dt(temp$x,5),col="red")
+dev.off()
+
+
+# USING COVARIANCE MATRIX
+# Computing the criterion function for each estimate...
+output_2=c()
+for (i in 1:length(para_list))
 {
-  u=round(runif(1,500,nrow(X)),0)               
-  #generates a random number/date from the dataset matrix X
-  sample=X[(u-499):(u),]                        
-  #creates a vector sample of 500 dates with respect to u
-  check=try(solve(var(sample)),silent=TRUE)     
-  #tests if it can calculate the variance of the sample
-  if (is.character(check))                      
-    #if it reaches a result (check=1)
-    {
-      count=count+1                             
-    #it continues the boucle augmenting the counter
-    } else                                      
-    #otherwise
-    { mutemp=apply(sample,2,mean)               
-     #calculates the mean of the subsample
-      sigmainvtemp=solve(cov(sample))           
-     #calculates sigma inverse of the subsample
-      temp=1/gamma*sigmainvtemp%*%mu            
-     #computes markowitz weights using the sigma of the subsample
-     #and the population mean
-      wsigma=rbind(wsigma,t(temp))              
-     #the new sigma is the same sigma plus the vector temp
-      temp=1/gamma*sigmainvtemp%*%mutemp        
-     #computes markowitz using subsample mean and sigma
-      wtotal=rbind(wtotal,t(temp))              
-     #total weight is the 
-      temp=1/gamma*sigmainv%*%mutemp            
-     #computes markowitz using the population sigma and the subsample mean
-      wmu=rbind(wmu,t(temp))                    
-     #the new mu is the same wmu plus the vector temp 
-      }
-  print(c(i,count/500))
+  output_2=c(output_2,criterion_W(para_list[i],returns))
 }
-layout(matrix(1:3,1,3))
 
-boxplot(wtotal[,1:20],ylim=c(-400,400), main="mu and sigma updated")
-boxplot(wmu[,1:20],ylim=c(-400,400), main="mu updated")
-boxplot(wsigma[,1:20],ylim=c(-400,400), main="sigma updated")
+#... and then graph them!
+pdf(file="Graph2_1.pdf")
+plot(para_list,output_2,type="l",xlab="nu",
+     ylab="Criterion",main="W=Cov(x)")
+dev.off()
 
+# Finding the minimum value
+minimum_2=para_list[which(output_2==min(output_2))]
+print(minimum_2)
+
+# And charting the resulting density
+pdf(file="Graph2_2.pdf")
+temp=density(scale(returns))
+plot(temp, type="l", ylab="Density", main="")
+lines(temp$x,dt(temp$x,5),col="red")
+dev.off()
 
 \end{verbatim}
 
-\chapter{R-code - Exercise 2.1}
+\chapter{R-code - Exercise 2}
 
 \begin{verbatim}
-##########################################################################
-# HEC Lausanne - MScF
-# Data Science for Finance
-# Exercise Session 3 - 14.10.2019
-# Marceau Pierron, Taulant Ukshini, David Sasselli, Nora Koennyu
-##########################################################################
+    x=read.delim("sp.csv",sep=";",header=FALSE)
+x=diff(as.matrix(log(x)),1)
 
-X=read.delim("datalausanneequity.csv",sep=";",header=FALSE)
-X=diff(as.matrix(log(X)),1)
+# sampling t-distributed observations
+returns=(x-mean(x))/sd(x)
+       
+# Creating a criterion function with W=I
+criterion_I<-function(para,x)
+ {
+   nu=para
+   cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
+   cond2=mean(x^2)-(nu/(nu-2))
+   # output=y^Ty
+   output=matrix(c(cond1,cond2),1,2)
+   return(output%*%t(output))
+ }
+       
+# Creating a criterion function with the full W
+criterion_W<-function(para,x)
+ {
+   nu=para
+   cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
+   cond2=mean(x^2)-(nu/(nu-2))
+   W=cov(cbind(x^2/sqrt(length(x)),x^4/sqrt(length(x))))
+   output=matrix(c(cond1,cond2),1,2)
+   return(output%*%solve(W)%*%t(output))
+ }
+       
+# Setting a potential list of candidate estimates
+para_list=seq(5,30,by=1)
+     
+       
+       
+#USING IDENTITY MATRIX
+# Computing the criterion function for each estimate...
+output_3=c()
+for (i in 1:length(para_list))
+ {
+   output_3=c(output_3,criterion_I(para_list[i],returns))
+ }
+       
+#... and then graph them!
+pdf(file="Graph3_1.pdf")
+plot(para_list,output_3,type="l",xlab="nu",ylab="Criterion",main="W=I")
+dev.off()
 
-#Markowitz
-mu=apply(X,2,mean)
-sigma=cov(X)
-sigmainv=solve(sigma)
-gamma=3
-w=1/gamma*sigmainv%*%mu
-#rP=X%*%w
-#P=cumprod(1+rP)
-#plot(P)
-
-
-#subsampling
-wshrink=0.2
-wtotal=c()             #creates a vector to stock the weights
-wsigma=c()
-wmu=c()
-count=0                 #counter defined and set to 0
-for (i in 1:1000)        #starts a 500 rounds boucle
-{
-  u=round(runif(1,500,nrow(X)),0)               
-  #generates a random number/date from the dataset matrix X
-  sample=X[(u-499):(u),]                        
-  #creates a vector sample of 500 dates with respect to u
-  check=try(solve(var(sample)),silent=TRUE)     
-  #tests if it can calculate the variance of the sample
-  if (is.character(check))                      
-    #if it reaches a result (check=1)
-  {
-    count=count+1                             
-    #it continues the boucle augmenting the counter
-  } else                                      #otherwise
-  { 
-    mutemp=apply(sample,2,mean)               
-    #calculates the mean of the subsample
-    sigmainvtemp=solve(cov(sample))           
-    #calculates sigma inverse of the subsample
-    
-    #model the constant correlation matrix
-    F_Mat=matrix(,nrow=452,ncol=452)
-    Corr_Av=mean(cor(sample))
-    print(Corr_Av)
-    StDev=apply(sample,2,sd)
-    for(i in 1:452){
-      for(j in 1:452){
-        if(i==j){
-          F_Mat[i,j]=StDev[i]*StDev[j]
-        }
-        
-        else{
-          F_Mat[i,j]=Corr_Av*StDev[i]*StDev[j]
-        }
-      }}                                
-      
-      
-    Sigmashrinktemp=F_Mat*wshrink+((1-wshrink)*diag(452))%*%sigmainvtemp
-    Sigmashrinkinvtemp=solve(Sigmashrinktemp)
-    
-    temp=1/gamma*Sigmashrinkinvtemp%*%mu            
-    #computes markowitz weights using the sigma of
-    #the subsample and the population mean
-    wsigma=rbind(wsigma,t(temp))              
-    #the new sigma is the same sigma plus the vector temp
-    temp=1/gamma*Sigmashrinkinvtemp%*%mutemp        
-    #computes markowitz using subsample mean and sigma
-    wtotal=rbind(wtotal,t(temp))             
-    #total weight is the 
-    temp=1/gamma*sigmainv%*%mutemp            
-    #computes markowitz using the population sigma and the subsample mean
-    wmu=rbind(wmu,t(temp))                    
-    #the new mu is the same wmu plus the vector temp 
-  }
-  print(c(i,count/500))
-}
-layout(matrix(1:2,1,2))
-
-#boxplot(wsigma[,1:20],ylim=c(-10,10))
-#boxplot(wmu[,1:20],ylim=c(-10,10))
-boxplot(wtotal[,1:20],ylim=c(-400,400), main="regularized")
+# Finding the minimum value
+minimum_3=para_list[which(output_3==min(output_3))]
+print(minimum_3)
+       
+# And charting the resulting density
+pdf(file="Graph3_2.pdf")
+temp=density(scale(returns))
+plot(temp, type="l", ylab="Density", main="")
+lines(temp$x,dt(temp$x,5),col="red")       
+dev.off()
 
 
-#Recreates first boxplot
-X=read.delim("datalausanneequity.csv",sep=";",header=FALSE)
-X=diff(as.matrix(log(X)),1)
+# USING COVARIANCE MATRIX
+# Computing the criterion function for each estimate...
+output_4=c()
+for (i in 1:length(para_list))
+ {
+   output_4=c(output_4,criterion_W(para_list[i],returns))
+ }
+       
+#... and then graph them!
+pdf(file="Graph4_1.pdf")
+plot(para_list,output_4,type="l",xlab="nu",ylab="Criterion",main="W=Cov(x)")
+dev.off()
 
-#Markowitz
-mu=apply(X,2,mean)
-sigma=cov(X)
-sigmainv=solve(sigma)
-gamma=3
-w=1/gamma*sigmainv%*%mu
-#rP=X%*%w
-#P=cumprod(1+rP)
-#plot(P)
+# Finding the minimum value
+minimum_4=para_list[which(output_4==min(output_4))]
+print(minimum_4)
 
-#subsampling
-wtotal=c()             #creates a vector to stock the weights
-wsigma=c()
-wmu=c()
-count=0                 #counter defined and set to 0
-for (i in 1:1000)        #starts a 500 rounds boucle
-{
-  u=round(runif(1,500,nrow(X)),0)               
-  #generates a random number/date from the dataset matrix X
-  sample=X[(u-499):(u),]                        
-  #creates a vector sample of 500 dates with respect to u
-  check=try(solve(var(sample)),silent=TRUE)     
-  #tests if it can calculate the variance of the sample
-  if (is.character(check))                      
-    #if it reaches a result (check=1)
-  {
-    count=count+1                             
-    #it continues the boucle augmenting the counter
-  } else                                      #otherwise
-  { mutemp=apply(sample,2,mean)               
-   #calculates the mean of the subsample
-  sigmainvtemp=solve(cov(sample))           
-   #calculates sigma inverse of the subsample
-  temp=1/gamma*sigmainvtemp%*%mu            
-   #computes markowitz weights using the sigma of the
-   #subsample and the population mean
-  wsigma=rbind(wsigma,t(temp))              
-   #the new sigma is the same sigma plus the vector temp
-  temp=1/gamma*sigmainvtemp%*%mutemp        
-   #computes markowitz using subsample mean and sigma
-  wtotal=rbind(wtotal,t(temp))              
-   #total weight is the 
-  temp=1/gamma*sigmainv%*%mutemp            
-   #computes markowitz using the population sigma and the subsample mean
-  wmu=rbind(wmu,t(temp))                    
-   #the new mu is the same wmu plus the vector temp 
-  }
-  print(c(i,count/500))
-}
-#layout(matrix(1:3,1,3))
-
-boxplot(wtotal[,1:20],ylim=c(-400,400), main="mu and sigma updated")
-#boxplot(wmu[,1:20],ylim=c(-400,400), main="mu updated")
-#boxplot(wsigma[,1:20],ylim=c(-400,400), main="sigma updated")
-
+# And charting the resulting density
+pdf(file="Graph4_2.pdf")
+temp=density(scale(returns))
+plot(temp, type="l", ylab="Density", main="")
+lines(temp$x,dt(temp$x,5),col="red")       
+dev.off()
 \end{verbatim}
-
-
-\chapter{R-code - Exercise 2.2}
-
-\begin{verbatim}
-##########################################################################
-# HEC Lausanne - MScF
-# Data Science for Finance
-# Exercise Session 3 - 14.10.2019
-# Marceau Pierron, Taulant Ukshini, David Sasselli, Nora Koennyu
-##########################################################################
-
-X=read.delim("datalausanneequity.csv",sep=";",header=FALSE)
-X=diff(as.matrix(log(X)),1)
-
-#Markowitz
-mu=apply(X,2,mean)
-sigma=cov(X)
-sigmainv=solve(sigma)
-gamma=3
-w=1/gamma*sigmainv%*%mu
-#rP=X%*%w
-#P=cumprod(1+rP)
-#plot(P)
-
-#subsampling
-wshrink=0.2
-wtotal=c()             #creates a vector to stock the weights
-wsigma=c()
-wmu=c()
-count=0                 #counter defined and set to 0
-for (i in 1:1000)        #starts a 500 rounds boucle
-{
-  u=round(runif(1,500,nrow(X)),0)               
-  #generates a random number/date from the dataset matrix X
-  sample=X[(u-499):(u),]                        
-  #creates a vector sample of 500 dates with respect to u
-  check=try(solve(var(sample)),silent=TRUE)     
-  #tests if it can calculate the variance of the sample
-  if (is.character(check))                      
-    #if it reaches a result (check=1)
-  {
-    count=count+1                             
-    #it continues the boucle augmenting the counter
-  } else                                      #otherwise
-  { 
-    DefiniteMatrixIdentity=wshrink*diag(452)
-    mutemp=apply(sample,2,mean)               
-    #calculates the mean of the subsample
-  sigmainvtemp=solve(cov(sample))           
-    #calculates sigma inverse of the subsample
-  Sigmashrinktemp=DefiniteMatrixIdentity+
-                    ((1-wshrink)*diag(452))%*%sigmainvtemp
-  Sigmashrinkinvtemp=solve(Sigmashrinktemp)
-  
-  
-  temp=1/gamma*Sigmashrinkinvtemp%*%mu            
-    #computes markowitz weights using the sigma of the
-    #subsample and the population mean
-  wsigma=rbind(wsigma,t(temp))              
-    #the new sigma is the same sigma plus the vector temp
-  temp=1/gamma*Sigmashrinkinvtemp%*%mutemp        
-    #computes markowitz using subsample mean and sigma
-  wtotal=rbind(wtotal,t(temp))             
-    #total weight is the 
-  temp=1/gamma*sigmainv%*%mutemp            
-    #computes markowitz using the population sigma and the subsample mean
-  wmu=rbind(wmu,t(temp))                    
-    #the new mu is the same wmu plus the vector temp 
-  }
-  print(c(i,count/500))
-}
-layout(matrix(1:2,1,2))
-
-#boxplot(wsigma[,1:20],ylim=c(-10,10))
-#boxplot(wmu[,1:20],ylim=c(-10,10))
-boxplot(wtotal[,1:20],ylim=c(-400,400), main="regularized")
-
-
-
-#Recreates first boxplot
-X=read.delim("datalausanneequity.csv",sep=";",header=FALSE)
-X=diff(as.matrix(log(X)),1)
-
-#Markowitz
-mu=apply(X,2,mean)
-sigma=cov(X)
-sigmainv=solve(sigma)
-gamma=3
-w=1/gamma*sigmainv%*%mu
-#rP=X%*%w
-#P=cumprod(1+rP)
-#plot(P)
-
-#subsampling
-wtotal=c()         #creates a vector to stock the weights
-wsigma=c()
-wmu=c()
-count=0                 #counter defined and set to 0
-for (i in 1:1000)        #starts a 500 rounds boucle
-{
-  u=round(runif(1,500,nrow(X)),0)               
-  #generates a random number/date from the dataset matrix X
-  sample=X[(u-499):(u),]                        
-  #creates a vector sample of 500 dates with respect to u
-  check=try(solve(var(sample)),silent=TRUE)     
-  #tests if it can calculate the variance of the sample
-  if (is.character(check))                      
-    #if it reaches a result (check=1)
-  {
-    count=count+1                             
-    #it continues the boucle augmenting the counter
-  } else                                      #otherwise
-  { mutemp=apply(sample,2,mean)               
-   #calculates the mean of the subsample
-  sigmainvtemp=solve(cov(sample))           
-   #calculates sigma inverse of the subsample
-  temp=1/gamma*sigmainvtemp%*%mu            
-   #computes markowitz weights using the sigma of the
-   #subsample and the population mean
-  wsigma=rbind(wsigma,t(temp))              
-   #the new sigma is the same sigma plus the vector temp
-  temp=1/gamma*sigmainvtemp%*%mutemp        
-   #computes markowitz using subsample mean and sigma
-  wtotal=rbind(wtotal,t(temp))              
-   #total weight is the 
-  temp=1/gamma*sigmainv%*%mutemp            
-   #computes markowitz using the population sigma and the
-   #subsample mean
-  wmu=rbind(wmu,t(temp))                    
-   #the new mu is the same wmu plus the vector temp 
-  }
-  print(c(i,count/500))
-}
-#layout(matrix(1:3,1,3))
-
-boxplot(wtotal[,1:20],ylim=c(-400,400), main="mu and sigma updated")
-#boxplot(wmu[,1:20],ylim=c(-400,400), main="mu updated")
-#boxplot(wsigma[,1:20],ylim=c(-400,400), main="sigma updated")
-
-\end{verbatim}
-
 \end{appendices}
 
