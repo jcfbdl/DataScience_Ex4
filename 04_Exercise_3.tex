@@ -1,4 +1,4 @@
-\chapter{Apparent strict concavity of the objective function}
+\chapter{Apparent Concavity of the Objective Function for S\&P500 Returns}
 
 
 %When using the S&P returns, you should find a concave objective function. There is a good reason for that! But it took me a moment to realize... Will you be able to understand why? A straight 6 to each assignment which explains why!
@@ -76,3 +76,19 @@ In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$
 Therefore the $O_f$ is convex between $4$ and $\nu^* \approx 4.42194$ so the local minimum of the function calculated in (\ref{FirstDerivativeOf_Of_I}) is situated on the convex portion.
 \smallskip\par
 In contrast, from $\nu^* \approx 4.42194$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{} since the range used was $\{5:30\}$
+
+\section{Generalisation}
+
+The previous analysis can be generalised to the case where the objective function is such that:
+\begin{equation*}
+    O_f = C^T \Sigma^{-1} C \; \; \; ; \; \;
+        \Sigma=
+    \begin{bmatrix}[c]
+        \sigma_{m_1,m_1}    & \sigma_{m_1,m_2} \\
+        \sigma_{m_2,m_1}    & \sigma_{m_2,m_2}
+    \end{bmatrix}
+    \;\;\; ; \; \; C = 
+    \begin{bmatrix}[c]
+        
+    \end{bmatrix}
+\end{equation*}
