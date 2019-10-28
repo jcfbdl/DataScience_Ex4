@@ -1,6 +1,9 @@
-\chapter{Exercise 1}
-The aim of this exercise is to estimate the parameter of a Student $t$-distribution using the Generalized Method of Moments (GMM). In Exercise 1, we use a randomly generated sample (sampled from a Student $t$-distribution), in Exercise 2, we use log-returns from a real S\&P500 dataset. 
-\subsection*{Theoretical background}
+\chapter{Generalised Method of Moments}
+
+The aim of this exercise is to estimate the parameter of a Student $t$-distribution using the Generalized Method of Moments (GMM). In Exercise 1, we use a randomly generated sample (sampled from a Student $t$-distribution), in Exercise 2, we use log-returns from a real S\&P500 data-set. 
+
+\subsection*{Theoretical Background}
+
 GMM is based on the so-called moment generating function 
 \begin{equation*}
 M_x(t):= E[e^{tX}]\quad t\in \mathbb{R}
@@ -8,9 +11,9 @@ M_x(t):= E[e^{tX}]\quad t\in \mathbb{R}
 We use the $k^{th}$-order derivative of the Taylor-expansion of this function to derive  $k^{th}$ moment condition of the given distribution. Based on these moment conditions we can estimate the parameters of the given distribution. We can have 2 cases: 
 \begin{enumerate}
 \item The number of moment conditions $L$ equals the number of parameters $K$ that we would like to estimate. In this case our model is \textit{exactly identified}.
-\item We have more moment conditions than parameters to be estimated $L>K$. In this case the model is \textit{overidentified} and we need to find a strategy to make use of the data the best possible way.
+\item We have more moment conditions than parameters to be estimated $L>K$. In this case the model is \textit{over-identified} and we need to find a strategy to make use of the data the best possible way.
 \end{enumerate}
-In our case the model is overidentified, there is one parameter $(\nu)$ that we need to estimate and we have 2 moment conditions:
+In our case the model is over-identified, there is one parameter $(\nu)$ that we need to estimate and we have 2 moment conditions:
 \begin{equation*}
 X \sim T_{\nu}, \quad E[X^2]=\frac{\nu}{\nu-2}, \quad E[X^4]=E[X^2]\left(3+\frac{6}{\nu-4}\right)
 \end{equation*}
@@ -18,7 +21,7 @@ We would like to find a weighting matrix that would find a "right balance" betwe
 \begin{equation*}
 m_n(\nu)^T W m_n(\nu)
 \end{equation*}
-where $W$ is a positive definite weighting matrix and $m_n$ is the vector of moment conditions. This is a positive, quadratic function. It will be our objective function that we would like to \textit{minimize} with respect to $\nu$.
+Where $W$ is a positive definite weighting matrix and $m_n$ is the vector of moment conditions. This is a positive, quadratic function. It will be our objective function that we would like to \textit{minimize} with respect to $\nu$.
 In both Exercise 1 and 2, the estimation consists of 2 steps:
 \begin{enumerate}
 \item Find $\nu$ such that moment conditions are as close to 0 as possible, that is $W=I$ and the objective function becomes 
@@ -30,8 +33,8 @@ In both Exercise 1 and 2, the estimation consists of 2 steps:
 \min m_n^TWm_n = \min \sum \frac{m^1(x_i)^2}{\sigma_1^2}+ \sum \frac{m^2(x_i)^2}{\sigma_2^2}
 \end{equation*}
 \end{enumerate}
-\subsection*{Intuition behind GMM}
-GMM can be seen as a generalization of other estimation measures learned during statistics and econometrics classes such as OLS, maximum likelihood as well as 2SLS. While OLS precision much likely depends on the exogenity of the regressors and poses strict assumptions concerning the residuals, with GMM we gain in flexibility since we only put assumptions about the moment conditions. Moreover, the moment conditions are balanced with a weight matrix in order to reflext the difference of impact of each moment (think about that as a sort of well-balanced portfolio). The problem is essentially to solve this quadratic form minimization with respect to the paramenter (say $\nu$):
+\subsection*{Intuition Behind GMM}
+GMM can be seen as a generalization of other estimation measures learned during statistics and econometrics classes such as OLS, maximum likelihood as well as 2SLS. While OLS precision much likely depends on the exogenity of the regressors and poses strict assumptions concerning the residuals, with GMM we gain in flexibility since we only put assumptions about the moment conditions. Moreover, the moment conditions are balanced with a weight matrix in order to reflect the difference of impact of each moment (think about that as a sort of well-balanced portfolio). The problem is essentially to solve this quadratic form minimization with respect to the parameter (say $\nu$):
 
 \begin{equation*}
     \min_\nu \{Y^T WY\} \;\;\;\;\text{(where $W$ is s a positive definite symmetric matrix)}
@@ -59,10 +62,10 @@ While using GMM we’re essentially confronted with an optimization problem in w
 
 \newpage
 
-\section{Create two functions in R and compute the GMM with randomly generated t-returns}
+\section{Create Two Functions in R and Compute the GMM with Randomly Generated t-returns}
 
-\subsection{A first function that computes the GMM criterion with W=I}
-The function takes the following imputs: a parameter $\nu$ and the randomly generated t-returns in the vector X. Begin to write the appropriate conditions, in our case $E[X^2], E[X^4]$:
+\subsection{A First Function that Computes the GMM Criterion with $W=I$}
+The function takes the following inputs: a parameter $\nu$ and the randomly generated t-returns in the vector $X$. Begin to write the appropriate conditions, in our case $E[X^2], E[X^4]$:
 \begin{equation*}
     Y=    
     \begin{bmatrix}[l]
@@ -73,8 +76,8 @@ The function takes the following imputs: a parameter $\nu$ and the randomly gene
 The function will then return the scalar resulting from the quadratic form $Y^TWY$. In this case we want the weight matrix W to be equal to the identity matrix therefore the quadratic form reduces to $Y^TY$.
 
 
-\subsection{A second function that computes the GMM criterion with W=Cov($m_i$)}
-The function takes the following imputs: a parameter $\nu$ and the randomly generated t-returns in the vector X. Begin to write the appropriate conditions, in our case $E[X^2], E[X^4]$:
+\subsection{A Second Function that Computes the GMM Criterion with $W=Cov(m_i)^{-1}$}
+The function takes the following inputs: a parameter $\nu$ and the randomly generated t-returns in the vector $X$. Begin to write the appropriate conditions, in our case $E[X^2], E[X^4]$:
 \begin{equation*}
     Y=    
     \begin{bmatrix}[l]
@@ -82,7 +85,7 @@ The function takes the following imputs: a parameter $\nu$ and the randomly gene
     E[X^2]-\frac{\nu}{\nu-2}
     \end{bmatrix}
 \end{equation*}
-The function will then return the scalar resulting from the quadratic form $Y^TWY$. In this second case the weight matrix corresponds to inverse of the covariance matrix between moments, i.e.
+The function will then return the scalar resulting from the quadratic form $Y^T W Y$. In this second case the weight matrix corresponds to inverse of the covariance matrix between moments, i.e.
 
 \begin{equation*}
     W=\Sigma^{-1}=
@@ -92,18 +95,16 @@ The function will then return the scalar resulting from the quadratic form $Y^TW
     \end{bmatrix}
 \end{equation*}
 The output of the function will be a scalar resulting from the quadratic form $Y^TWY=Y^T\Sigma^{-1}Y$.
-\\
-\\
-
-After a function is defined, it is very easy to use it in whichever part of the code by simply referring to it and giving the right outputs. In our case we want to iterate the process with different parameters taken in sequence. Note that by the first moment condition $\mu>4$ therefore a paramter list of the following form is set: $\nu_i=k_j, (i=1-25), (k=5-30)$. This list of parameters is a list of candidates, for each candidate the function runs and gives a scalar as an output. The goal is to create a list of outputs corresponding to a given candidate and to select the one for which the output is minimized.\\
-Running the code for the two cases (W=I and W=Cov($m_i$) allows us to plot the following output distributions:
+\bigskip\par
+After a function is defined, it is very easy to use it in whichever part of the code by simply referring to it and giving the right outputs. In our case we want to iterate the process with different parameters taken in sequence. Note that by the first moment condition $\nu>4$ therefore a parameter list of the following form is set: $\nu_i \in \{5:30\}$. This list of parameters is a list of candidates, for each candidate the function runs and gives a scalar as an output. The goal is to create a list of outputs corresponding to a given candidate and to select the one for which the output is minimized.\\
+Running the code for the two cases ($W=I$ and $W=Cov(m_i)^{-1}$) allows us to plot the following output distributions:
 
 \begin{figure}\label{t-returns_criterion}
     \centering
     \includegraphics[width=0.7\textwidth]{t-returns_criterion_(W=I).pdf}
-    \caption{Output distribution as a function of the candidates $\nu$ using W=I}
+    \caption{Output distribution as a function of the candidates $\nu$ using $W=I$}
     \includegraphics[width=0.7\textwidth]{t-returns_criterion_(W=Sigma^-1).pdf}
-    \caption{Output distribution as a function of the candidates $\nu$ using W=$\Sigma^{-1}$}
+    \caption{Output distribution as a function of the candidates $\nu$ using $W=\Sigma^{-1}$}
 \end{figure}
 
 
@@ -134,7 +135,7 @@ Note that the result is not exactly the true value of the parameter but we can c
 \begin{figure}\label{t-returns_density}
     \centering
     \includegraphics[width=0.7\textwidth]{t-returns_density_(W=I).pdf}
-    \caption{t-returns density using W=I}
+    \caption{t-returns density using $W=I$}
     \includegraphics[width=0.7\textwidth]{t-returns_density_(W=Sigma^-1).pdf}
-    \caption{t-returns density using W=$\Sigma^{-1}$}
+    \caption{t-returns density using $W=\Sigma^{-1}$}
 \end{figure}

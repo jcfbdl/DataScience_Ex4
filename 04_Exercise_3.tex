@@ -10,8 +10,8 @@ By construction, the possible range we have set for $\nu$ is $\{5;30\}$ with $\n
     C_1 &= E\left[X^4\right] - \left(\frac{6}{\nu-4}+3\right)\cdot E^2\left[X^2\right] \\
     C_2 &= E\left[X^2\right] - \frac{\nu}{\nu - 2}
 \end{align*}
-Therefore excluding $\nu = 4$, $C_2$ also excludes $\nu=2$; $3$ is not necessarily excluded, but produces non-optimal values for our data-set (We will treat degrees of freedom inferior to $4$ further-on).
-\par
+Therefore excluding $\nu = 4$, $C_2$ also excludes $\nu=2$; $3$ is not necessarily excluded, but produces non-optimal values for our data-set.
+\smallskip\par
 However if we relax the integer constraint on the number of degrees of freedom and treat the objective function as a continuous function instead of the discreet case, we obtain a completely different result !
 
 
@@ -22,14 +22,14 @@ However if we relax the integer constraint on the number of degrees of freedom a
 We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (For clarity we restrict the domain to $[4.2;6]$). Results presented in Figure \ref{ConcavitySPI} use the objective function described by $Criterion_I = C^T I C$. The following calculations will be done using this criterion for the sake of clarity, however the results hold for $Criterion_W = C^T \Sigma^{-1} C$ as shown in Figure \ref{ConcavitySPW} \bigskip
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{ConcavityS&PI.pdf}
-    \caption{Cool Caption \& Stuff}
+    \includegraphics[width=0.95\textwidth]{ConcavityS&PI.pdf}
+    \caption{Objective function of }
     \label{ConcavitySPI}
 \end{figure}
 \par
 Complete fucking game-changer boys ! First of all the function now appears to be convex from $4$ to roughly $4.5$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
 \par
-The empirical optimal value for which the $O_f$ is minimised is $\nu=4.28$. 
+The empirical optimal value for which the $O_f$ is minimised is $\nu=4.2$. 
 This can easily be verified by computing the first derivative of the objective function for our specific case:
 \begin{equation}\label{ObjectiveFunction_I}
     O_f = \left[E\left[X^4\right] - \left(\frac{6}{\nu-4}+3\right)\cdot         
@@ -37,28 +37,30 @@ This can easily be verified by computing the first derivative of the objective f
             \left[E\left[X^2\right] - \frac{\nu}{\nu - 2}\right]^2
 \end{equation}
 
-We substitute $E\left[X^4\right]$ and $E\left[X^2\right]$ by their respective empirical approximations for our scaled S\&P500 returns : $105.7222$ and $2.084548$, this gives us:
+We substitute $E\left[X^4\right]$ and $E\left[X^2\right]$ by their respective empirical approximations for our scaled S\&P500 returns : $32.83457$ and $0.9998292$, this gives us:
 
 \begin{align}\label{FirstDerivativeOf_Of_I}
     \begin{split}
-        \pdv{O_f}{\nu} &= \pdv{\nu} \; \left[ \left(105.7222 - (\frac{6}{\nu-4} + 3) \cdot
-                            2.084548^2 \right)^2 + \left(2.084548 - \frac{\nu}{\nu - 2}\right)^2 \right] \\
-                        &= \frac{4837.37 \nu^4 - 49758.6 \nu^3 + 182555 \nu^2 - 288042 \nu + 166600}{(\nu - 4)^3 (\nu - 2)^3}
+        \pdv{O_f}{\nu} &= \pdv{\nu} \; \left[ \left(32.83457 - (\frac{6}{\nu-4} + 3) \cdot
+                            0.9998292^2 \right)^2 + \left(0.9998292 - \frac{\nu}{\nu - 2}\right)^2 \right] \\
+                        &= \frac{357.904 \nu^4 - 3658.99 \nu^3 + 13412.2 \nu^2 - 21290 \nu + 12540.5}{(\nu - 4)^3 (\nu - 2)^3}
     \end{split}
 \end{align}
 
-Solving $\nu$ for  $\pdv{O_f}{\nu}=0$ gives two solutions: $\nu_1^* \approx 2.16397$ and $\nu_2^* \approx 4.28129$, we can disregard $\nu_1$ as it is not part of the set domain (Furthermore $O_f(\nu_1) > O_f(\nu_2)$), however $\nu_2^*$ \emph{is} part of our domain and is not one of the boundaries. \smallskip
+
+Solving $\nu$ for  $\pdv{O_f}{\nu}=0$ gives two solutions: $\nu_1^* \approx 2.37458$ and $\nu_2^* \approx 4.20105$, we can disregard $\nu_1$ as it is not part of the set domain (Furthermore $O_f(\nu_1) > O_f(\nu_2)$), however $\nu_2^*$ \emph{is} part of our domain and is not one of the boundaries. \smallskip
 \par
-Therefore implying the optimal value of $\nu$ to fit our distribution of scaled S\&P500 returns is $4.28129$ which is consistent with the value found previously.
+Therefore implying the optimal value of $\nu$ to fit our distribution of scaled S\&P500 returns is $4.20105$ which is consistent with the value found previously.
 
 \subsection{Local Convexity \& Concavity of the $O_f$}
 
 After having addressed the question of the "true" local minimum of the function, we now turn to the apparent concavity of the $O_f$ as presented in Figure \ref{} \bigskip\par
 Using the objective function described by Equation \ref{ObjectiveFunction_I} and the empirical values used to compute the first derivative (\ref{FirstDerivativeOf_Of_I}) we can also derive the second derivative of the $O_f$ :
 \begin{equation}\label{SecondDerivativeOf_Of_I}
-    \pdv[2]{O_f}{\nu} =  \frac{-9674.75 \nu^5 + 120252 \nu^4 - 575423 \nu^3 + 1.34133\text{E}^6 \nu^2 - 1.53523\text{E}^6 \nu + 694471}{(\nu - 4)^4 (\nu - 2)^4}
+    \pdv[2]{O_f}{\nu} =  \frac{-715.808 \nu^5 + 8829.54 \nu^4 - 42196 \nu^3 + 99107.5 \nu^2 - 116127 \nu + 55408.8}{(\nu - 4)^4 (\nu - 2)^4}
 \end{equation}
-If we solve for $\pdv[2]{O_f}{\nu} = 0$ we obtain a single real root: $\nu^* \approx 4.42194$ indicating a point of inflexion of the $O_f$ at $\nu^*$ 
+
+If we solve for $\pdv[2]{O_f}{\nu} = 0$ we obtain a single real root: $\nu^* \approx 4.30156$ indicating a point of inflexion of the $O_f$ at $\nu^*$ 
 \smallskip \par
 In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$ are shown in Figure \ref{SecondDerivativePlot_I}:
 \begin{equation*}
@@ -73,9 +75,9 @@ In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$
     \end{cases}
 \end{equation*}
 
-Therefore the $O_f$ is convex between $4$ and $\nu^* \approx 4.42194$ so the local minimum of the function calculated in (\ref{FirstDerivativeOf_Of_I}) is situated on the convex portion.
+Therefore the $O_f$ is convex between $4$ and $\nu^* \approx 4.30156$ so the local minimum of the function calculated in (\ref{FirstDerivativeOf_Of_I}) is situated on the convex portion.
 \smallskip\par
-In contrast, from $\nu^* \approx 4.42194$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{SP500_returns_criterion} since the range used was $\{5:30\}$
+In contrast, from $\nu^* \approx 4.30156$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{SP500_returns_criterion} since the range used was $\{5:30\}$
 
 \section{Generalisation and Further Development}
 
@@ -96,13 +98,13 @@ The previous analysis can be generalised to the case where the objective functio
 In fact this was also the case for the randomly generated t-returns in the first part of Exercise 1, the functions represented in Figure \ref{t-returns_criterion} are not strictly convex, they are also concave on the upper part of the function.
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{ConcavityS&PW.pdf}
+    \includegraphics[width=0.6\textwidth]{ConcavityS&PW.pdf}
     \caption{Cool Caption}
     \label{ConcavitySPW}
 \end{figure}
-This can be demonstrated by the fact that the second derivative of the objective function for our randomly generated t-returns is negative after $\nu^*$
+This can be demonstrated by the fact that the second derivative of the objective function for our randomly generated t-returns is negative after $\nu^*$.
 \smallskip\par
-Intuitively this can be seen by calculating the limit of the $O_f$ when $\nu$ tends to infinity, this limit exists and is finite, however it is unique to each data-set (provided each data-set is different): it is the value of the objective function that measures the distance between the data-set and the Normal Distribution. In the case of our S\&P500 returns:
+Intuitively this can be seen by calculating the limit of the $O_f$ when $\nu$ tends to infinity, this limit exists and is finite, however it is unique to each data-set (provided each data-set is different): it is the value of the objective function that measures the distance between the data-set and the Normal Distribution. In the case of our S\&P500 returns when using $Criterion_I$ :
 \begin{equation*}
-    \lim_{\nu \to \infty}O_f = 
+    \lim_{\nu \to \infty}O_f = \lim_{\nu \to \infty}C^T I C = 890.163
 \end{equation*}
