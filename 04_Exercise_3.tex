@@ -1,1 +1,78 @@
-\chapter{Exercise 3}
+\chapter{Apparent strict concavity of the objective function}
+
+
+%When using the S&P returns, you should find a concave objective function. There is a good reason for that! But it took me a moment to realize... Will you be able to understand why? A straight 6 to each assignment which explains why!
+
+It seems that when using the S\&P500 returns we find a \emph{concave} objective function, however this is not entirely true: the function is indeed concave on its upper part (it is even asymptotically bounded, but this was also the case for the randomly generated returns !), however in the vicinity of the optimal $\nu$ it is convex. \smallskip
+\par
+By construction, the possible range we have set for $\nu$ is $\{5;30\}$ with $\nu$ only able to take integer values. The first constraint is due to the expression of the fourth order moment condition $C_1$:
+\begin{align*}
+    C_1 &= E\left[X^4\right] - \left(\frac{6}{\nu-4}+3\right)\cdot E^2\left[X^2\right] \\
+    C_2 &= E\left[X^2\right] - \frac{\nu}{\nu - 2}
+\end{align*}
+Therefore excluding $\nu = 4$, $C_2$ also excludes $\nu=2$; $3$ is not necessarily excluded, but produces non-optimal values for our data-set (We will treat degrees of freedom inferior to $4$ further-on).
+\par
+However if we relax the integer constraint on the number of degrees of freedom and treat the objective function as a continuous function instead of the discreet case, we obtain a completely different result !
+
+
+\section{A Continuous Approach}
+
+\subsection{Local Optimum of the Objective Function}
+
+We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (For clarity we restrict the domain to $[4.2;6]$). Results presented in Figure \ref{fig:BigSPContI} use the objective function described by $Criterion_I = C^T I C$. The following calculations will be done using this criterion for the sake of clarity, however the results hold for $Criterion_W = C^T \Sigma^{-1} C$ as shown in Figure \ref{BigSPContW} \bigskip
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{SP500_Continuous_I.pdf}
+    \caption{Cool Caption \& Stuff}
+    \label{fig:BigSPContI}
+\end{figure}
+\par
+Complete fucking game-changer boys ! First of all the function now appears to be convex from $4$ to roughly $4.5$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
+\par
+The empirical optimal value for which the $O_f$ is minimised is $\nu=4.28$. 
+This can easily be verified by computing the first derivative of the objective function for our specific case:
+\begin{equation}\label{ObjectiveFunction_I}
+    O_f = \left[E\left[X^4\right] - \left(\frac{6}{\nu-4}+3\right)\cdot         
+                E^2\left[X^2\right]\right]^2 +
+            \left[E\left[X^2\right] - \frac{\nu}{\nu - 2}\right]^2
+\end{equation}
+
+We substitute $E\left[X^4\right]$ and $E\left[X^2\right]$ by their respective empirical approximations for our scaled S\&P500 returns : $105.7222$ and $2.084548$, this gives us:
+
+\begin{align}\label{FirstDerivativeOf_Of_I}
+    \begin{split}
+        \pdv{O_f}{\nu} &= \pdv{\nu} \; \left[ \left(105.7222 - (\frac{6}{\nu-4} + 3) \cdot
+                            2.084548^2 \right)^2 + \left(2.084548 - \frac{\nu}{\nu - 2}\right)^2 \right] \\
+                        &= \frac{4837.37 \nu^4 - 49758.6 \nu^3 + 182555 \nu^2 - 288042 \nu + 166600}{(\nu - 4)^3 (\nu - 2)^3}
+    \end{split}
+\end{align}
+
+Solving $\nu$ for  $\pdv{O_f}{\nu}=0$ gives two solutions: $\nu_1^* \approx 2.16397$ and $\nu_2^* \approx 4.28129$, we can disregard $\nu_1$ as it is not part of the set domain (Furthermore $O_f(\nu_1) > O_f(\nu_2)$), however $\nu_2^*$ \emph{is} part of our domain and is not one of the boundaries. \smallskip
+\par
+Therefore implying the optimal value of $\nu$ to fit our distribution of scaled S\&P500 returns is $4.28129$ which is consistent with the value found previously.
+
+\subsection{Local Convexity \& Concavity of the $O_f$}
+
+After having addressed the question of the "true" local minimum of the function, we now turn to the apparent concavity of the $O_f$ as presented in Figure \ref{} \bigskip\par
+Using the objective function described by Equation \ref{ObjectiveFunction_I} and the empirical values used to compute the first derivative (\ref{FirstDerivativeOf_Of_I}) we can also derive the second derivative of the $O_f$ :
+\begin{equation}\label{SecondDerivativeOf_Of_I}
+    \pdv[2]{O_f}{\nu} =  \frac{-9674.75 \nu^5 + 120252 \nu^4 - 575423 \nu^3 + 1.34133\text{E}^6 \nu^2 - 1.53523\text{E}^6 \nu + 694471}{(\nu - 4)^4 (\nu - 2)^4}
+\end{equation}
+If we solve for $\pdv[2]{O_f}{\nu} = 0$ we obtain a single real root: $\nu^* \approx 4.42194$ indicating a point of inflexion of the $O_f$ at $\nu^*$ 
+\smallskip \par
+In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$ are shown in Figure \ref{SecondDerivativePlot_I}:
+\begin{equation*}
+    \begin{cases}
+        O_f^{''} > 0 \; , \; \nu \in \; ]-\infty;2[ \\
+        O_f^{''} \text{ undefined } \; , \; \nu = 2 \\
+        O_f^{''} > 0 \; , \; \nu \in \; ]2;4[ \\
+        O_f^{''} \text{ undefined } \; , \; \nu = 4 \\
+        O_f^{''} > 0 \; , \; \nu \in \; ]4;\nu^*[ \\
+        O_f^{''} = 0 \; , \; \nu = \nu^* \\
+        O_f^{''} < 0 \; , \; \nu \in \; ]\nu^*;\infty[ \\
+    \end{cases}
+\end{equation*}
+
+Therefore the $O_f$ is convex between $4$ and $\nu^* \approx 4.42194$ so the local minimum of the function calculated in (\ref{FirstDerivativeOf_Of_I}) is situated on the convex portion.
+\smallskip\par
+In contrast, from $\nu^* \approx 4.42194$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{} since the range used was $\{5:30\}$
