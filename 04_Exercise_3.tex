@@ -19,7 +19,7 @@ However if we relax the integer constraint on the number of degrees of freedom a
 
 \subsection{Local Optimum of the Objective Function}
 
-We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (For clarity we restrict the domain to $[4.2;6]$). Results presented in Figure \ref{fig:BigSPContI} use the objective function described by $Criterion_I = C^T I C$. The following calculations will be done using this criterion for the sake of clarity, however the results hold for $Criterion_W = C^T \Sigma^{-1} C$ as shown in Figure \ref{ConcavitySPI} \bigskip
+We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (For clarity we restrict the domain to $[4.2;6]$). Results presented in Figure \ref{ConcavitySPI} use the objective function described by $Criterion_I = C^T I C$. The following calculations will be done using this criterion for the sake of clarity, however the results hold for $Criterion_W = C^T \Sigma^{-1} C$ as shown in Figure \ref{ConcavitySPW} \bigskip
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{ConcavityS&PI.pdf}
@@ -101,3 +101,8 @@ In fact this was also the case for the randomly generated t-returns in the first
     \label{ConcavitySPW}
 \end{figure}
 This can be demonstrated by the fact that the second derivative of the objective function for our randomly generated t-returns is negative after $\nu^*$
+\smallskip\par
+Intuitively this can be seen by calculating the limit of the $O_f$ when $\nu$ tends to infinity, this limit exists and is finite, however it is unique to each data-set (provided each data-set is different): it is the value of the objective function that measures the distance between the data-set and the Normal Distribution. In the case of our S\&P500 returns:
+\begin{equation*}
+    \lim_{\nu \to \infty}O_f = 
+\end{equation*}
