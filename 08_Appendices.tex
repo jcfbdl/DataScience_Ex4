@@ -3,6 +3,7 @@
 \chapter{R-code - Exercise 1}
 
 \begin{verbatim}
+# PART 1.1
 # sampling t-distributed observations
 returns=rt(10000,10)
 
@@ -31,8 +32,9 @@ criterion_W<-function(para,x)
 # Setting a potential list of candidate estimates
 para_list=seq(5,30,by=1)
 
-
-
+\end{verbatim}
+\newpage
+\begin{verbatim}
 #USING IDENTITY
 # Computing the criterion function for each estimate...
 output_1=c()
@@ -42,8 +44,9 @@ for (i in 1:length(para_list))
   }
 
 #... and then graph them!
-pdf(file="Graph1_1.pdf")
-plot(para_list,output_1,type="l",xlab="nu",ylab="Criterion",main="W=I")
+pdf(file="t-returns_criterion_(W=I).pdf")
+plot(para_list,output_1,type="l",xlab="nu",ylab="Criterion",
+main="W=I")
 dev.off()
 
 # Finding the minimum value
@@ -51,9 +54,10 @@ minimum_1=para_list[which(output_1==min(output_1))]
 print(minimum_1)
 
 # And charting the resulting density
-pdf(file="Graph1_2.pdf")
+pdf(file="t-returns_density_(W=I).pdf")
 temp=density(scale(returns))
-plot(temp, type="l", ylab="Density", main="")
+plot(temp, type="l", ylab="Density", 
+main="t-returns density (W=I)")
 lines(temp$x,dt(temp$x,5),col="red")
 dev.off()
 
@@ -67,7 +71,7 @@ for (i in 1:length(para_list))
 }
 
 #... and then graph them!
-pdf(file="Graph2_1.pdf")
+pdf(file="t-returns_criterion_(W=Sigma^-1).pdf")
 plot(para_list,output_2,type="l",xlab="nu",
      ylab="Criterion",main="W=Cov(x)")
 dev.off()
@@ -77,18 +81,18 @@ minimum_2=para_list[which(output_2==min(output_2))]
 print(minimum_2)
 
 # And charting the resulting density
-pdf(file="Graph2_2.pdf")
+pdf(file="t-returns_density_(W=Sigma^-1).pdf")
 temp=density(scale(returns))
-plot(temp, type="l", ylab="Density", main="")
+plot(temp, type="l", ylab="Density",
+main="t-returns density (W=Sigma^-1)")
 lines(temp$x,dt(temp$x,5),col="red")
 dev.off()
-
 \end{verbatim}
 
-\chapter{R-code - Exercise 2}
-
+\newpage
 \begin{verbatim}
-    x=read.delim("sp.csv",sep=";",header=FALSE)
+# PART 1.2
+x=read.delim("sp.csv",sep=";",header=FALSE)
 x=diff(as.matrix(log(x)),1)
 
 # sampling t-distributed observations
@@ -119,8 +123,7 @@ criterion_W<-function(para,x)
 # Setting a potential list of candidate estimates
 para_list=seq(5,30,by=1)
      
-       
-       
+     
 #USING IDENTITY MATRIX
 # Computing the criterion function for each estimate...
 output_3=c()
@@ -130,8 +133,9 @@ for (i in 1:length(para_list))
  }
        
 #... and then graph them!
-pdf(file="Graph3_1.pdf")
-plot(para_list,output_3,type="l",xlab="nu",ylab="Criterion",main="W=I")
+pdf(file="S&P500_returns_criterion_(W=I).pdf")
+plot(para_list,output_3,type="l",xlab="nu",ylab="Criterion",
+main="W=I")
 dev.off()
 
 # Finding the minimum value
@@ -139,9 +143,10 @@ minimum_3=para_list[which(output_3==min(output_3))]
 print(minimum_3)
        
 # And charting the resulting density
-pdf(file="Graph3_2.pdf")
+pdf(file="S&P500_returns_density_(W=I).pdf")
 temp=density(scale(returns))
-plot(temp, type="l", ylab="Density", main="")
+plot(temp, type="l", ylab="Density", 
+main="S&P500 returns density (W=I)")
 lines(temp$x,dt(temp$x,5),col="red")       
 dev.off()
 
@@ -155,8 +160,9 @@ for (i in 1:length(para_list))
  }
        
 #... and then graph them!
-pdf(file="Graph4_1.pdf")
-plot(para_list,output_4,type="l",xlab="nu",ylab="Criterion",main="W=Cov(x)")
+pdf(file="S&P500_returns_criterion_(W=Sigma^-1).pdf")
+plot(para_list,output_4,type="l",xlab="nu",ylab="Criterion",
+main="W=Cov(x)")
 dev.off()
 
 # Finding the minimum value
@@ -164,11 +170,12 @@ minimum_4=para_list[which(output_4==min(output_4))]
 print(minimum_4)
 
 # And charting the resulting density
-pdf(file="Graph4_2.pdf")
+pdf(file="S&P500_returns_density_(W=Sigma^-1).pdf")
 temp=density(scale(returns))
-plot(temp, type="l", ylab="Density", main="")
+plot(temp, type="l", ylab="Density", 
+main="S&P500 returns density (W=Sigma^-1)")
 lines(temp$x,dt(temp$x,5),col="red")       
 dev.off()
+
 \end{verbatim}
 \end{appendices}
-

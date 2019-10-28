@@ -19,12 +19,12 @@ However if we relax the integer constraint on the number of degrees of freedom a
 
 \subsection{Local Optimum of the Objective Function}
 
-We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (For clarity we restrict the domain to $[4.2;6]$). Results presented in Figure \ref{fig:BigSPContI} use the objective function described by $Criterion_I = C^T I C$. The following calculations will be done using this criterion for the sake of clarity, however the results hold for $Criterion_W = C^T \Sigma^{-1} C$ as shown in Figure \ref{BigSPContW} \bigskip
+We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (For clarity we restrict the domain to $[4.2;6]$). Results presented in Figure \ref{fig:BigSPContI} use the objective function described by $Criterion_I = C^T I C$. The following calculations will be done using this criterion for the sake of clarity, however the results hold for $Criterion_W = C^T \Sigma^{-1} C$ as shown in Figure \ref{ConcavitySPI} \bigskip
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{SP500_Continuous_I.pdf}
+    \includegraphics[width=0.9\textwidth]{ConcavityS&PI.pdf}
     \caption{Cool Caption \& Stuff}
-    \label{fig:BigSPContI}
+    \label{ConcavitySPI}
 \end{figure}
 \par
 Complete fucking game-changer boys ! First of all the function now appears to be convex from $4$ to roughly $4.5$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
@@ -75,7 +75,7 @@ In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$
 
 Therefore the $O_f$ is convex between $4$ and $\nu^* \approx 4.42194$ so the local minimum of the function calculated in (\ref{FirstDerivativeOf_Of_I}) is situated on the convex portion.
 \smallskip\par
-In contrast, from $\nu^* \approx 4.42194$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{} since the range used was $\{5:30\}$
+In contrast, from $\nu^* \approx 4.42194$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{SP500_returns_criterion} since the range used was $\{5:30\}$
 
 \section{Generalisation and Further Development}
 
@@ -93,11 +93,11 @@ The previous analysis can be generalised to the case where the objective functio
         E[X^2]-\frac{\nu}{\nu-2}
     \end{bmatrix}
 \end{equation*}
-In fact this was also
-
+In fact this was also the case for the randomly generated t-returns in the first part of Exercise 1, the functions represented in Figure \ref{t-returns_criterion} are not strictly convex, they are also concave on the upper part of the function.
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{ConcavityS&PW.pdf}
+    \includegraphics[width=0.8\textwidth]{ConcavityS&PW.pdf}
     \caption{Cool Caption}
     \label{ConcavitySPW}
 \end{figure}
+This can be demonstrated by the fact that the second derivative of the objective function for our randomly generated t-returns is negative after $\nu^*$
