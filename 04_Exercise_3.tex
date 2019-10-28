@@ -23,11 +23,11 @@ We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (Fo
 \begin{figure}
     \centering
     \includegraphics[width=0.95\textwidth]{ConcavityS&PI.pdf}
-    \caption{Objective function of }
+    \caption{Objective function of the $\nu$ parameter for S\&P500 returns using $W=I$}
     \label{ConcavitySPI}
 \end{figure}
 \par
-Complete fucking game-changer boys ! First of all the function now appears to be convex from $4$ to roughly $4.5$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
+Complete fucking game-changer boys ! First of all the function now appears to be convex from $4$ to roughly $4.4$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
 \par
 The empirical optimal value for which the $O_f$ is minimised is $\nu=4.2$. 
 This can easily be verified by computing the first derivative of the objective function for our specific case:
@@ -89,7 +89,7 @@ The previous analysis can be generalised to the case where the objective functio
         \sigma_{m_1,m_1}    & \sigma_{m_1,m_2} \\
         \sigma_{m_2,m_1}    & \sigma_{m_2,m_2}
     \end{bmatrix}
-    \;\;\; ; \; \; C = 
+    \;\; ; \; \; C = 
     \begin{bmatrix}[l]
         E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
         E[X^2]-\frac{\nu}{\nu-2}
@@ -99,7 +99,7 @@ In fact this was also the case for the randomly generated t-returns in the first
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{ConcavityS&PW.pdf}
-    \caption{Cool Caption}
+    \caption{Objective function of $\nu$ parameter for S\&P500 returns using $W=\Sigma^{-1}$}
     \label{ConcavitySPW}
 \end{figure}
 This can be demonstrated by the fact that the second derivative of the objective function for our randomly generated t-returns is negative after $\nu^*$.
@@ -108,3 +108,5 @@ Intuitively this can be seen by calculating the limit of the $O_f$ when $\nu$ te
 \begin{equation*}
     \lim_{\nu \to \infty}O_f = \lim_{\nu \to \infty}C^T I C = 890.163
 \end{equation*}
+
+\subsection{Non-Integer Degrees of Freedom}
