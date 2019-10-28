@@ -1,2 +1,38 @@
 
+The aim of this exercise is to estimate the parameter of a Student $t$-distribution using the Generalized Method of Moments (GMM). In Exercise 1, we use a randomly generated sample (sampled from a Student $t$-distribution), in Exercise 2, we use log-returns from a real S\&P500 dataset. 
+
+\subsection*{Theoretical background}
+GMM is based on the so-called moment generating function 
+\begin{equation*}
+M_x(t):= E[e^{tX}]\quad t\in \mathbb{R}
+\end{equation*}
+We use the $k^{th}$-order derivative of the Taylor-expansion of this function to derive  $k^{th}$ moment condition of the given distribution. Based on these moment conditions we can estimate the parameters of the given distribution. We can have 2 cases: 
+\begin{enumerate}
+\item The number of moment conditions $L$ equals the number of parameters $K$ that we would like to estimate. In this case our model is \textit{exactly identified}.
+\item We have more moment conditions than parameters to be estimated $L>K$. In this case the model is \textit{overidentified} and we need to find a strategy to make use of the data the best possible way.
+\end{enumerate}
+
+In our case the model is overidentified, there is one parameter $(\nu)$ that we need to estimate and we have 2 moment conditions:
+\begin{equation*}
+X \sim T_{\nu}, \quad E[X^2]=\frac{\nu}{\nu-2}, \quad E[X^4]=E[X^2]\left(3+\frac{6}{\nu-4}\right)
+\end{equation*}
+
+We would like to find a weighting matrix that would find a "right balance" between the two moment conditions. Therefore we define the distance function
+\begin{equation*}
+m_n(\nu)'Wm_n(\nu)
+\end{equation*}
+where $W$ is a positive definite weighting matrix and $m_n$ is the vector of moment conditions. This is a positive, quadratic function. It will be our objective function that we would like to \textit{minimize} with respect to $\nu$.
+
+In both Exercise 1 and 2, the estimation consists of 2 steps:
+\begin{enumerate}
+\item Find $\nu$ such that moment conditions are as close to 0 as possible, that is $W=I$ and the objective function becomes 
+\begin{equation*}
+\min m_n'm_n = \min \sum \left(m_i^{1,2}(x_i)\right)^2
+\end{equation*}
+\item We use the inverse of the covariance matrix as the weighting matrix $W=\Sigma^{-1}$ to give more weight to the data that has smaller variance. The objective function becomes 
+\begin{equation*}
+\min m_n'Wm_n = \min \sum \frac{m^1(x_i)^2}{\sigma_1^2}+ \sum \frac{m^2(x_i)^2}{\sigma_2^2}
+\end{equation*}
+\end{enumerate}
+
 \chapter*{Exercise 1}
