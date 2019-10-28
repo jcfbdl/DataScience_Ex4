@@ -1,1 +1,52 @@
-\chapter*{Exercise 2}
+\newpage
+\section{Create two functions in R and compute the GMM with the S\&P500 returns}
+
+Adopting the exact same approach as previously, moment conditions are defined as follows:
+\begin{equation*}
+    Y=    
+    \begin{bmatrix}[l]
+    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
+    E[X^2]-\frac{\nu}{\nu-2}
+    \end{bmatrix}
+\end{equation*}
+
+The function will then return the scalar resulting from the quadratic form $Y^TWY$. However, in this particular case we used the S\&P500 sample of returns instead of randomly generated ones; the methodology will be exactly the same: minimizing the moment conditions with respect to $\nu$. The following quadratic form is solved for different parameter candidates and two weight matrices (W=I and W=$\Sigma^{-1}$.
+\begin{equation*}
+    Y^TWY
+\end{equation*}
+\begin{equation*}
+    W_1=
+    \begin{bmatrix}
+        1   &0 \\
+        0   &1
+    \end{bmatrix};\;\;\;\;\;
+    W_2=\Sigma^{-1}=
+    \begin{bmatrix}[l]
+        \frac{1}{\sigma_{m_1,m_1}}    &\frac{1}{\sigma_{m_1,m_2}} \\
+        \frac{1}{\sigma_{m_2,m_1}}    &\frac{1}{\sigma_{m_2,m_2}}
+    \end{bmatrix}
+\end{equation*}
+
+Running the code for the two cases generate a vector containing the output of the minimization problem for every parameter $\nu$ employed. Recall that by the first moment condition $\nu>4$ therefore a paramter list of the following form is set: $\nu_i=k_j, (i=1-25), (k=5-30)$. The goal is to find the parameter $\nu$ for which the moments conditions, i.e. criterion, are minimized, the resulting plots are listed on the next page.
+\\
+\\
+The data used in the exercise give an estimated $\nu$ of:
+\begin{equation*}
+    \begin{cases}
+    \widehat{\nu}_{GMM_{1}}=5 \;\;\text{using W=I}\\
+    \widehat{\nu}_{GMM_{2}}=5 \;\;\text{using W=}\Sigma^{-1}
+\end{cases}
+\end{equation*}
+Why is the convexity apparently disappeared? The criterion function has a minimum at $\nu_1=5$ and trying to run the code while changing the candidates list to $\nu_i=k_i, (i=1-25), (k=6-31)$ won't change the result: the minimum will always be at the first candidate tested. The following section provides a detailed explaination to this phenomenon.
+
+\newpage
+
+
+\subsubsection{Output distribution as a function of the candidates $\nu$ using W=I}
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{Graph3_1.pdf}    
+\end{center}
+\subsubsection{Output distribution as a function of the candidates $\nu$ using W=$\Sigma^{-1}$}
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{Graph4_1.pdf}    
+\end{center}

@@ -1,2 +1,102 @@
+\chapter{Exercise 1}
+GMM can be seen as a generalization of other estimation measures learned during statistics and econometrics classes such as OLS, maximum likelihood as well as 2SLS. While OLS precision much likely depends on the exogenity of the regressors and poses strict assumptions concerning the residuals, with GMM we gain in flexibility since we only put assumptions about the moment conditions. Moreover, the moment conditions are balanced with a weight matrix in order to reflext the difference of impact of each moment (think about that as a sort of well-balanced portfolio). The problem is essentially to solve this quadratic form minimization with respect to the paramenter (say $\nu$):
 
-\chapter*{Exercise 1}
+\begin{equation*}
+    \min_\nu \{Y^T WY\} \;\;\;\;\text{(where $W$ is s a positive definite symmetric matrix)}
+\end{equation*}
+
+\noindent 
+While using GMM we’re essentially confronted with an optimization problem in which the goal is to find the best estimate of the parameter of interest such that the moment conditions are globally as close to 0 as possible. It is important to note that the assumption of moment conditions to be equally important, i.e. equally weighted, is usually wrong. For that purpose we run the optimization problem using different weight matrices.
+
+\subsubsection{Notation}
+\begin{equation*}
+    Y=
+    \begin{bmatrix}
+        m^1(x_1)\\
+        ...\\
+        m^1(x_n)\\
+        m^2(x_1)\\
+        ...\\
+        m^2(x_n)\\
+        ...
+    \end{bmatrix};\;\;\;
+    X \sim T_\nu, \; E[X^2]=\frac{\nu}{\nu-2},\;\;
+    E[X^4]=E^2[X^2](3+\frac{6}{\nu-4})
+\end{equation*}
+
+
+\newpage
+
+\section{Create two functions in R and compute the GMM with randomly generated t-returns}
+
+\subsection{A first function that computes the GMM criterion with W=I}
+The function takes the following imputs: a parameter $\nu$ and the randomly generated t-returns in the vector X. Begin to write the appropriate conditions, in our case $E[X^2], E[X^4]$:
+\begin{equation*}
+    Y=    
+    \begin{bmatrix}[l]
+    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
+    E[X^2]-\frac{\nu}{\nu-2}
+    \end{bmatrix}
+\end{equation*}
+The function will then return the scalar resulting from the quadratic form $Y^TWY$. In this case we want the weight matrix W to be equal to the identity matrix therefore the quadratic form reduces to $Y^TY$.
+
+
+\subsection{A second function that computes the GMM criterion with W=Cov($m_i$)}
+The function takes the following imputs: a parameter $\nu$ and the randomly generated t-returns in the vector X. Begin to write the appropriate conditions, in our case $E[X^2], E[X^4]$:
+\begin{equation*}
+    Y=    
+    \begin{bmatrix}[l]
+    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
+    E[X^2]-\frac{\nu}{\nu-2}
+    \end{bmatrix}
+\end{equation*}
+The function will then return the scalar resulting from the quadratic form $Y^TWY$. In this second case the weight matrix corresponds to inverse of the covariance matrix between moments, i.e.
+
+\begin{equation*}
+    W=\Sigma^{-1}=
+    \begin{bmatrix}[l]
+        \frac{1}{\sigma_{m_1,m_1}}    &\frac{1}{\sigma_{m_1,m_2}} \\
+        \frac{1}{\sigma_{m_2,m_1}}    &\frac{1}{\sigma_{m_2,m_2}}
+    \end{bmatrix}
+\end{equation*}
+The output of the function will be a scalar resulting from the quadratic form $Y^TWY=Y^T\Sigma^{-1}Y$.
+\\
+\\
+
+After a function is defined, it is very easy to use it in whichever part of the code by simply referring to it and giving the right outputs. In our case we want to iterate the process with different parameters taken in sequence. Note that by the first moment condition $\mu>4$ therefore a paramter list of the following form is set: $\nu_i=k_j, (i=1-25), (k=5-30)$. This list of parameters is a list of candidates, for each candidate the function runs and gives a scalar as an output. The goal is to create a list of outputs corresponding to a given candidate and to select the one for which the output is minimized.\\
+Running the code for the two cases (W=I and W=Cov($m_i$) allows us to plot the following output distributions:
+
+\newpage
+
+\subsubsection{Output distribution as a function of the candidates $\nu$ using W=I}
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{Graph1_1.pdf}    
+\end{center}
+\subsubsection{Output distribution as a function of the candidates $\nu$ using W=$\Sigma^{-1}$}
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{Graph2_1.pdf}    
+\end{center}
+
+\newpage
+As a result, the estimated parameter that minimizes our moment conditions is close to 10. Note that we generated 10000 random returns following a Student distribution with 10 degrees of freedom. Recall the necessary conditions behind the GMM:
+\begin{itemize}
+    \item Convergence of empirical moments;
+    \item Identification;
+    \item Asymptotic distribution of empirical moments.
+\end{itemize}
+With these assumptions it is guaranteed that the estimated GMM parameter converges towards the true parameter. In our case:
+\begin{equation*}
+        \widehat{\nu}_{GMM} \to \nu_0
+\end{equation*}
+\begin{equation*}
+        \widehat{\nu}_{GMM} \sim N(\nu_0,
+        \frac{1}{n}[(\frac{\partial\overline{m}_n\nu_0}{\partial\nu_0^T})^T\Sigma^{-1}\frac{\partial\overline{m}_n\nu_0}{\partial\nu_0^T}]^T)
+\end{equation*}
+The data used in the exercise give an estimated $\nu$ of:
+\begin{equation*}
+    \begin{cases}
+    \widehat{\nu}_{GMM_{1}}=9 \;\;\text{using W=I}\\
+    \widehat{\nu}_{GMM_{2}}=9 \;\;\text{using W=}\Sigma^{-1}
+\end{cases}
+\end{equation*}
+Note that the result is not exactly the true value of the parameter but we can converge to the true value by increasing the number of random generated variables, in fact, by the LLN as n increases the GMM estimate converges to the true value, i.e. 10.

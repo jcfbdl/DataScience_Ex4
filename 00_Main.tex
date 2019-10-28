@@ -41,6 +41,17 @@
 \usepackage{amssymb}
 \usepackage{epstopdf}
 \usepackage{float}
+\usepackage{verbatim}
+\usepackage{physics}
+
+
+\newcommand{\R}{\mathbb{R}}
+
+\makeatletter
+\renewcommand*\env@matrix[1][c]{\hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols #1}}
+\makeatother
 
 \begin{document}
 \renewcommand\bibname{Bibliography} %Renames "Bibliography" to "References" on ref page
@@ -62,7 +73,7 @@
 
 \input{02_Exercise_1.tex} %objective changed to problem definition
 \input{03_Exercise_2.tex} %literature survey included in this
-%\input{04_Exercise_3.tex}
+\input{04_Exercise_3.tex}
 %\input{05_Exercise_4.tex}
 %\input{06_Exercise_5.tex}
 %\input{07_References.tex}
