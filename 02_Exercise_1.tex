@@ -121,7 +121,7 @@ With these assumptions it is guaranteed that the estimated GMM parameter converg
 \end{equation*}
 \begin{equation*}
         \widehat{\nu}_{GMM} \sim N(\nu_0,
-        \frac{1}{n}[(\frac{\partial\overline{m}_n\nu_0}{\partial\nu_0^T})^T\Sigma^{-1}\frac{\partial\overline{m}_n\nu_0}{\partial\nu_0^T}]^T)
+        \frac{1}{n}[(\frac{\partial\overline{m}_n\nu_0}{\partial\nu_0^T})^T\Sigma^{-1}\frac{\partial\overline{m}_n\nu_0}{\partial\nu_0^T}]^{-1})
 \end{equation*}
 The data used in the exercise give an estimated $\nu$ of:
 \begin{equation*}
@@ -131,6 +131,9 @@ The data used in the exercise give an estimated $\nu$ of:
 \end{cases}
 \end{equation*}
 Note that the result is not exactly the true value of the parameter but we can converge to the true value by increasing the number of random generated variables, in fact, by the LLN as n increases the GMM estimate converges to the true value, i.e. 10.
+
+Figure \ref{t-returns_density} shows the estimated density functions with $W=I$ and $W=\Sigma^{-1}$ and compares them to a randomly generated (not estimated) t-distribution with 5 degrees of freedom. The Student t-distribution is derived from the normal distribution and as the number of degrees of freedom approaches infinity, the t-distribution tends to the standard normal distribution. In fact, for more than 30 degrees of freedom, the distributions are very close. However, when the number of degrees of freedom is less than 30, the t-distribution has "heavier" tails. In this figure we see that a t-distribution with fewer degrees of freedom (red line, degrees of freedom = 5) has fatter tails than what we have estimated based on our sample with 10 degrees of freedom, regardless of the weighting matrix (black line). 
+
 
 \begin{figure}\label{t-returns_density}
     \centering
