@@ -49,6 +49,18 @@ At first sight it seems correct to have convexity, the problem here is that we h
         8250.90722  &2839215.102
         \end{bmatrix}
 \end{equation*}
+Notice that the variance associated to the second moment condition is 89170.3483 times bigger than the variance associated to the second moment condition. The problem comes when we calculate the optimum function, in order to compute the output we have to invert $\Sigma$, therefore $\Sigma^{-1}$ is:
+\begin{equation*}
+    W=\Sigma=
+    \begin{bmatrix}[l]
+        \frac{1}{31.84035}    &\frac{1}{8250.907} \\
+        \frac{1}{8250.90722}  &\frac{1}{2839215.102}
+        \end{bmatrix}=
+    \begin{bmatrix}[l]
+        0.1271814035    &-3.695958*10^{-4} \\
+        -0.0003695958    &1.426275*10^{-06}
+    \end{bmatrix}
+\end{equation*}
 
 
 
