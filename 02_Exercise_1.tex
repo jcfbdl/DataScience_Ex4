@@ -99,11 +99,13 @@ The output of the function will be a scalar resulting from the quadratic form $Y
 After a function is defined, it is very easy to use it in whichever part of the code by simply referring to it and giving the right outputs. In our case we want to iterate the process with different parameters taken in sequence. Note that by the first moment condition $\nu>4$ therefore a parameter list of the following form is set: $\nu_i \in \{5:30\}$. This list of parameters is a list of candidates, for each candidate the function runs and gives a scalar as an output. The goal is to create a list of outputs corresponding to a given candidate and to select the one for which the output is minimized.\\
 Running the code for the two cases ($W=I$ and $W=Cov(m_i)^{-1}$) allows us to plot the following output distributions:
 
-\begin{figure}\label{t-returns_criterion}
+\begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{t-returns_criterion_(W=I).pdf}
+    \label{t-returns_criterion_I}
     \caption{Output distribution as a function of the candidates $\nu$ using $W=I$}
     \includegraphics[width=0.7\textwidth]{t-returns_criterion_(W=Sigma^-1).pdf}
+    \label{t-returns_criterion_W}
     \caption{Output distribution as a function of the candidates $\nu$ using $W=\Sigma^{-1}$}
 \end{figure}
 
@@ -132,13 +134,15 @@ The data used in the exercise give an estimated $\nu$ of:
 \end{equation*}
 Note that the result is not exactly the true value of the parameter but we can converge to the true value by increasing the number of random generated variables, in fact, by the LLN as n increases the GMM estimate converges to the true value, i.e. 10.
 
-Figure \ref{t-returns_density} shows the estimated density functions with $W=I$ and $W=\Sigma^{-1}$ and compares them to a randomly generated (not estimated) t-distribution with 5 degrees of freedom. The Student t-distribution is derived from the normal distribution and as the number of degrees of freedom approaches infinity, the t-distribution tends to the standard normal distribution. In fact, for more than 30 degrees of freedom, the distributions are very close. However, when the number of degrees of freedom is less than 30, the t-distribution has "heavier" tails. In this figure we see that a t-distribution with fewer degrees of freedom (red line, degrees of freedom = 5) has fatter tails than what we have estimated based on our sample with 10 degrees of freedom, regardless of the weighting matrix (black line). 
+Figures \ref{t-returns_density_I} and \ref{t-returns_density_W} show the estimated density functions with $W=I$ and $W=\Sigma^{-1}$ and compares them to a randomly generated (not estimated) t-distribution with 5 degrees of freedom. The Student t-distribution is derived from the normal distribution and as the number of degrees of freedom approaches infinity, the t-distribution tends to the standard normal distribution. In fact, for more than 30 degrees of freedom, the distributions are very close. However, when the number of degrees of freedom is less than 30, the t-distribution has "heavier" tails. In this figure we see that a t-distribution with fewer degrees of freedom (red line, degrees of freedom = 5) has fatter tails than what we have estimated based on our sample with 10 degrees of freedom, regardless of the weighting matrix (black line). 
 
 
-\begin{figure}\label{t-returns_density}
+\begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{t-returns_density_(W=I).pdf}
+    \label{t-returns_density_I}
     \caption{t-returns density using $W=I$}
     \includegraphics[width=0.7\textwidth]{t-returns_density_(W=Sigma^-1).pdf}
+    \label{t-returns_density_W}
     \caption{t-returns density using $W=\Sigma^{-1}$}
 \end{figure}

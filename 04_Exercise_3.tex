@@ -1,7 +1,18 @@
 \chapter{Apparent Concavity of the Objective Function for S\&P500 Returns}
 
 
+\subsection{Why Using $W=\Sigma^{-1}$ Changed Everything}
+
+As presented in Figure \ref{SP500_returns_criterion_W} and explained in Section 1.2.2 when using $W=\Sigma^{-1}$ the fourth moment condition is somewhat completely ignored due to the size of the fourth moment's variance (i.e. the weight of the fourth moment condition is insignificant compared to that of the second moment).
+\smallskip\par
+However, when using $W=I$ (Figure \ref{SP500_returns_criterion_W}), we assign the same weight to both conditions (Which is incidentally why inverting the conditions has not changed the $O_f$ for $W=I$). This is why the shape of the $O_f$ is completely different depending on the weights used.
+\smallskip\par
+In the following Sections we will analyse the objective function when using equal weights and attempt to explain its behaviour.
+
+
 %When using the S&P returns, you should find a concave objective function. There is a good reason for that! But it took me a moment to realize... Will you be able to understand why? A straight 6 to each assignment which explains why!
+
+\subsection{Relaxing Constraints of the Objective Function}
 
 It seems that when using the S\&P500 returns we find a \emph{concave} objective function when using $W=I$, however this is not entirely true: the function is indeed concave on its upper part, but this was also the case for the randomly generated returns. However in the vicinity of the optimal $\nu$ it is convex. Just as all other objective functions it is asymptotically bounded. \smallskip
 \par
@@ -13,10 +24,6 @@ By construction, the possible range we have set for $\nu$ is $\{5;30\}$ with $\n
 Therefore excluding $\nu = 4$, $C_2$ also excludes $\nu=2$; $3$ is not necessarily excluded, but produces non-optimal values for our data-set.
 \smallskip\par
 However if we relax the integer constraint on the number of degrees of freedom and treat the objective function as a continuous function instead of the discreet case, we obtain a completely different result !
-
-\section{Why Using $W=\Sigma^{-1}$ Changed Everything}
-
-As presented in Figure \ref{SP500_returns_criterion} when using $W=\Sigma^{-1}$ the fourth moment condition is somewhat completely ignored due to the size of the fourth moment's variance (Therefore the weight of the fourth moment condition being insignificant compared to that of the second moment).
 
 
 \section{A Continuous Approach}
@@ -58,7 +65,7 @@ Therefore implying the optimal value of $\nu$ to fit our distribution of scaled 
 
 \subsection{Local Convexity \& Concavity of the $O_f$}
 
-After having addressed the question of the "true" local minimum of the function, we now turn to the apparent concavity of the $O_f$ as presented in Figure \ref{SP500_returns_criterion} when using $W=I$ \bigskip\par
+After having addressed the question of the "true" local minimum of the function, we now turn to the apparent concavity of the $O_f$ as presented in Figure \ref{SP500_returns_criterion_I} when using $W=I$ \bigskip\par
 Using the objective function described by Equation \ref{ObjectiveFunction_I} and the empirical values used to compute the first derivative (Equation \ref{FirstDerivativeOf_Of_I}) we can also derive the second derivative of the $O_f$ :
 \begin{equation}\label{SecondDerivativeOf_Of_I}
     \pdv[2]{O_f}{\nu} =  \frac{-715.808 \nu^5 + 8829.54 \nu^4 - 42196 \nu^3 + 99107.5 \nu^2 - 116127 \nu + 55408.8}{(\nu - 4)^4 (\nu - 2)^4}
@@ -81,34 +88,17 @@ In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$
 
 Therefore the $O_f$ is convex between $4$ and $\nu^{**} \approx 4.30156$ so the local minimum of the function calculated in (Equation \ref{FirstDerivativeOf_Of_I}) is situated on the convex portion.
 \smallskip\par
-In contrast, from $\nu^{**} \approx 4.30156$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{SP500_returns_criterion} since the range used was $\{5:30\}$
+In contrast, from $\nu^{**} \approx 4.30156$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{SP500_returns_criterion_I} since the range used was $\{5:30\}$
 
 \section{Generalisation and Further Development}
 
-The previous analysis can be generalised to the case where the objective function is such that (cf. Figure \ref{ConcavitySPW}):
-\begin{equation*}
-    O_f = C^T \Sigma^{-1} C \; \; \; ; \; \;
-        \Sigma=
-    \begin{bmatrix}[c]
-        \sigma_{m_1,m_1}    & \sigma_{m_1,m_2} \\
-        \sigma_{m_2,m_1}    & \sigma_{m_2,m_2}
-    \end{bmatrix}
-    \;\; ; \; \; C = 
-    \begin{bmatrix}[l]
-        E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
-        E[X^2]-\frac{\nu}{\nu-2}
-    \end{bmatrix}
-\end{equation*}
-In fact this was also the case for the randomly generated t-returns in the first part of Exercise 1, the functions represented in Figure \ref{t-returns_criterion} are not strictly convex, they are also concave on the upper part of the function.
-\begin{figure}
-    \centering
-    \includegraphics[width=0.6\textwidth]{ConcavityS&PW.pdf}
-    \caption{Objective function of $\nu$ parameter for S\&P500 returns using $W=\Sigma^{-1}$}
-    \label{ConcavitySPW}
-\end{figure}
+The convex-concave shape of the $O_f$ was also present in the case of the randomly generated t-returns in the first part of Exercise 1, the functions represented in Figure \ref{t-returns_criterion_I} and Figure \ref{t-returns_criterion_W} are not strictly convex, they are also concave on the upper part of the function.
+\smallskip\par
+Intuitively this can be understood by the fact that there exists a finite $\nu^*$ for which the $O_f$ is minimised, yet the function is monotonous strictly increasing after this optimum and has a finite limit for $\nu \to \infty$ which is equal to the value of the objective function when trying to fit the S\&P500 returns distribution with a Normal Distribution. Therefore it must be concave. 
+\smallskip\par
 This can be demonstrated by the fact that the second derivative of the objective function for our randomly generated t-returns is negative after $\nu^*$.
 \smallskip\par
-Intuitively this can be seen by calculating the limit of the $O_f$ when $\nu$ tends to infinity, this limit exists and is finite, however it is unique to each data-set (provided each data-set is different): it is the value of the objective function that measures the distance between the data-set and the Normal Distribution. In the case of our S\&P500 returns when using $Criterion_I$ :
+This can be observed by calculating the limit of the $O_f$ when $\nu$ tends to infinity, this limit exists and is finite, however it is unique to each data-set (provided each data-set is different). In the case of our S\&P500 returns when using $Criterion_I$ :
 \begin{equation*}
     \lim_{\nu \to \infty}O_f = \lim_{\nu \to \infty}C^T I C = 890.163
 \end{equation*}
@@ -119,3 +109,5 @@ The initial issue arose from the fact that we use the number of degrees of freed
 When allowing $\nu$ to take non-integer values we "denature" the idea of a degree of freedom. There is some literature concerning non-integer values for degrees of freedom: indeed in a few circumstances you can establish that the degrees of freedom to fit the data for some particular models must be between some value $k$ and $k+1$.
 \smallskip\par
 We usually think of degrees of freedom as the number of free parameters, but there are situations where the parameters are not completely free and they can then be difficult to count. This can happen when smoothing / regularizing, for example. This could possibly refer to the Welch–Satterthwaite equation.
+
+\subsection{Reconnecting with Integer degrees of Freedom}
