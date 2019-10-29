@@ -3,7 +3,7 @@
 
 %When using the S&P returns, you should find a concave objective function. There is a good reason for that! But it took me a moment to realize... Will you be able to understand why? A straight 6 to each assignment which explains why!
 
-It seems that when using the S\&P500 returns we find a \emph{concave} objective function when using $W=I$, however this is not entirely true: the function is indeed concave on its upper part (it is even asymptotically bounded, but this was also the case for the randomly generated returns !), however in the vicinity of the optimal $\nu$ it is convex. \smallskip
+It seems that when using the S\&P500 returns we find a \emph{concave} objective function when using $W=I$, however this is not entirely true: the function is indeed concave on its upper part, but this was also the case for the randomly generated returns. However in the vicinity of the optimal $\nu$ it is convex. Just as all other objective functions it is asymptotically bounded. \smallskip
 \par
 By construction, the possible range we have set for $\nu$ is $\{5;30\}$ with $\nu$ only able to take integer values. The first constraint is due to the expression of the fourth order moment condition $C_1$:
 \begin{align*}
@@ -13,6 +13,10 @@ By construction, the possible range we have set for $\nu$ is $\{5;30\}$ with $\n
 Therefore excluding $\nu = 4$, $C_2$ also excludes $\nu=2$; $3$ is not necessarily excluded, but produces non-optimal values for our data-set.
 \smallskip\par
 However if we relax the integer constraint on the number of degrees of freedom and treat the objective function as a continuous function instead of the discreet case, we obtain a completely different result !
+
+\section{Why Using $W=\Sigma^{-1}$ Changed Everything}
+
+As presented in Figure \ref{SP500_returns_criterion} when using $W=\Sigma^{-1}$ the fourth moment condition is somewhat completely ignored due to the size of the fourth moment
 
 
 \section{A Continuous Approach}

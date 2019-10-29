@@ -24,10 +24,11 @@ criterion_W<-function(para,x)
     nu=para
     cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
     cond2=mean(x^2)-(nu/(nu-2))
-    W=cov(cbind(x^4,x^2))
-    output=matrix(c(cond1,cond2),1,2)
+    W=cov(cbind(x^2,x^4))
+    output=matrix(c(cond2,cond1),1,2)
     return(output%*%solve(W)%*%t(output))
   }
+
 
 
 # Setting a potential list of candidate estimates
@@ -93,6 +94,7 @@ plot(temp, type="l", ylab="Density", main="t-returns density (W=Sigma^-1)")
 lines(temp$x,dt(temp$x,minimum_2),col="red")
 dev.off()
 
+
 \end{verbatim}
 
 \newpage
@@ -119,18 +121,20 @@ criterion_I<-function(para,x)
 criterion_W<-function(para,x)
  {
    nu=para
-   cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
    cond2=mean(x^2)-(nu/(nu-2))
-   W=cov(cbind(x^4,x^2))
-   output=matrix(c(cond1,cond2),1,2)
+   cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
+   W=cov(cbind(x^2,x^4))
+   output=matrix(c(cond2,cond1),1,2)
    return(output%*%solve(W)%*%t(output))
  }
+
+W=cov(cbind(x^2,x^4))
+W
        
 # Setting a potential list of candidate estimates
 para_list=seq(5,30,by=1)
-     
-       
-       
+
+
 #USING IDENTITY MATRIX
 # Computing the criterion function for each estimate...
 output_3=c()
@@ -166,7 +170,8 @@ for (i in 1:length(para_list))
  {
    output_4=c(output_4,criterion_W(para_list[i],returns))
  }
-       
+
+
 # Finding the minimum value
 minimum_4=para_list[which(output_4==min(output_4))]
 print(minimum_4)
@@ -186,6 +191,8 @@ temp=density(scale(returns))
 plot(temp, type="l", ylab="Density", main="S&P500 returns density (W=Sigma^-1)")
 lines(temp$x,dt(temp$x,minimum_4),col="red")       
 dev.off()
+
+
 
 \end{verbatim}
 \end{appendices}

@@ -36,7 +36,23 @@ The data used in the exercise gives an estimated $\nu$ of:
     \widehat{\nu}_{GMM_{2}}=30 \;\;\text{using W=}\Sigma^{-1}
 \end{cases}
 \end{equation*}
-Why is the convexity apparently disappeared ? The criterion function has a minimum at $\nu_1=5$ and trying to run the code while changing the candidates list to $\nu_i \in \{5:30\}$ won't change the result: the minimum will always be at the first candidate tested. The following section aims to provide an explanation to this phenomenon.
+
+\subsection{W=I}
+Why is the convexity apparently disappeared ? The criterion function has a minimum at $\nu_1=5$ and trying to run the code while changing the candidates list to $\nu_i \in \{5:30\}$ won't change the result: the minimum will always be at the first candidate tested. Chapter 2 aims to provide an explanation to this phenomenon.
+
+\subsection{W=$\Sigma^{-1}$}
+At first sight it seems correct to have convexity, the problem here is that we have a minimum for the exactly last candidate. Expanding the list of candidates from $\nu_i \in \{5:30\}$ to $\nu_i \in \{5:1000\}$ won't change the outcome, in this case the minimum would be at $\nu=1000$. To understand the phenomenon, the covariance matrix has to be analyzed.
+\begin{equation*}
+    W=\Sigma=
+    \begin{bmatrix}[l]
+        31.84035    &8250.907 \\
+        8250.90722  &2839215.102
+        \end{bmatrix}
+\end{equation*}
+
+
+
+
 
 \newpage
 
