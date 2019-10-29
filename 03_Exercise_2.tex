@@ -33,7 +33,7 @@ The data used in the exercise gives an estimated $\nu$ of:
 \begin{equation*}
     \begin{cases}
     \widehat{\nu}_{GMM_{1}}=5 \;\;\text{using W=I}\\
-    \widehat{\nu}_{GMM_{2}}=5 \;\;\text{using W=}\Sigma^{-1}
+    \widehat{\nu}_{GMM_{2}}=30 \;\;\text{using W=}\Sigma^{-1}
 \end{cases}
 \end{equation*}
 Why is the convexity apparently disappeared ? The criterion function has a minimum at $\nu_1=5$ and trying to run the code while changing the candidates list to $\nu_i \in \{5:30\}$ won't change the result: the minimum will always be at the first candidate tested. The following section aims to provide an explanation to this phenomenon.
