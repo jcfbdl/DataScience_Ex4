@@ -38,25 +38,25 @@ The data used in the exercise gives an estimated $\nu$ of:
 \end{equation*}
 
 
-Estimates differ depending on the weight matrix involved in the optimization problem. The first case might be a "naive" estimate given that equal weight is attributed to the moment conditions.  When using the inverse of the covariance matrix, we put more reasonable weights on the moments. The following paragraphs discuss the difference between the two estimates.
+Estimates differ depending on the weight matrix involved in the optimization problem. The first case might be a "naive" estimate given that equal weight is attributed to the moment conditions.  When using the inverse of the covariance matrix, we put more reasonable weights on the moments. The following sections discuss the difference between the two estimates.
 
 
-\subsection{W=I}
-Why is the convexity apparently disappeared ? The criterion function has a minimum at $\nu_1=5$ and trying to run the code while changing the candidates list to $\nu_i \in \{6:30\}$ won't change the result: the minimum will always be at the first candidate tested. Chapter 2 aims to provide an explanation to this phenomenon.
+\subsection{$W=I$}\label{SectionCriterionSP500_I}
+The convexity of the objective function seems to have disappeared. The function has a minimum at $\nu_1=5$ and trying to run the code changing the candidates list to $\nu_i \in \{6:30\}$ won't change the result: the minimum will always be the first candidate tested. Chapter \ref{ChapterSP_I} aims to provide an explanation to this result.
 
-\subsection{W=$\Sigma^{-1}$}
-At first sight it seems correct to have convexity, the problem here is that the minimum is reached when running the optimization using the exact last candidate. Expanding the list of candidates from $\nu_i \in \{5:30\}$ to $\nu_i \in \{5:1000\}$ won't change the outcome, in this case the minimum would be at $\nu=1000$. To understand the phenomenon, the covariance matrix has to be analyzed.
+\subsection{$W=\Sigma^{-1}$}\label{SectionCriterionSP500_W}
+At first sight it seems correct to have convexity, the problem here is that the minimum is reached when running the optimization using the exact last candidate. Expanding the list of candidates from $\nu_i \in \{5:30\}$ to $\nu_i \in \{5:1000\}$ won't change the outcome, in this case the minimum would be at $\nu=1000$. To understand this result, the covariance matrix has to be analysed.
 \begin{equation*}
     W=\Sigma=
-    \begin{bmatrix}[l]
+    \begin{bmatrix}[r]
         31.84035    &8250.907 \\
         8250.90722  &2839215.102
         \end{bmatrix}
 \end{equation*}
-Notice that the variance associated to the second moment condition is 89170.3483 times bigger than the variance associated to the second moment condition. The problem comes when we calculate the optimum function, in order to compute the output we have to invert $\Sigma$, therefore $\Sigma^{-1}$ is:
+Notice that the variance associated to the second moment condition is 89170.3483 times bigger than the variance associated to the second moment condition. The problem arises when we calculate the objective function, in order to compute the output we have to invert $\Sigma$, therefore $\Sigma^{-1}$ is:
 \begin{equation*}
     W^{-1}=\Sigma^{-1}=
-    \begin{bmatrix}[l]
+    \begin{bmatrix}[r]
         \frac{1}{31.84035}    &\frac{1}{8250.907} \\
         \frac{1}{8250.90722}  &\frac{1}{2839215.102}
         \end{bmatrix}=
@@ -65,10 +65,14 @@ Notice that the variance associated to the second moment condition is 89170.3483
         -0.0003695958    &1.426275\mathrm{e}{-06}
     \end{bmatrix}
 \end{equation*}
-By using this approach the output almost fully depends on the second moment, the weight associated to the fourth moment is in fact almost negligible. The second moment condition (fourth moment) barely influences the optimization problem while solving the quadratic form and, as a result, the output function asymptotically tends to 0 when the parameter increases.
+By using this approach the output almost fully depends on the second moment, the weight associated to the fourth moment is in fact almost negligible. The second moment condition (fourth moment) barely influences the optimization problem whilst solving the quadratic form and, as a result, the objective function is somewhat restricted to minimising the first moment condition (Second moment). In this particular case, minimising this condition seems to point towards the Normal Distribution being the best fit for the S\&P500 returns: the objective function asymptotically tends to 0 as the parameter increases.
 
 \subsection{Estimated vs. theoretical density functions}
-Figure 1.7 compares the estimated density function based on the SP500 data using the $I$ as the weighting matrix with the theoretical Student t-distribution with 5 degrees of freedom, since we found that $df=5$ gave the estimated minimum of the distance function. Figure 1.8 compares the estimated density function based on the SP500 data using the covariance matrix between the two moment conditions as the weighting matrix with the theoretical Student t-distribution with 30 degrees of freedom, which again gave us the estimated minimum of our objective function. In both cases our estimate seems to be unbiased, centered around 0, but from the real dataset (black line) we get a taller and skinnier distribution than the theoretical distribution (red line). We could use statistical test, for example $\chi^2$ test to see whether there is significant difference between the two densities.
+Figure 1.7 compares the estimated density function based on the S\&P500 data using $I$ as the weighting matrix with the theoretical Student t-distribution with 5 degrees of freedom, since $df=5$ gave the minimum value of the objective function.
+\smallskip\par
+Figure 1.8 compares the estimated density function based on the S\&P500 data using the covariance matrix between the two moment conditions as the weighting matrix with the theoretical Student t-distribution with 30 degrees of freedom, which again gives us the minimum value of the objective function. In both cases our estimate seems to be unbiased, centered around 0, but from the real data-set (black line) we get a taller and skinnier distribution than the theoretical distribution (red line).
+\smallskip\par 
+We could use a Goodness Of Fit Test to determine the validity of our assumption that returns follow a Student distribution, for example a $\chi^2$, Kolmogorov-Smirnov, or Anderson-Darling test to see whether there is significant difference between the two densities.
 
 
 

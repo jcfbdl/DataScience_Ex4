@@ -1,11 +1,11 @@
-\chapter{Apparent Concavity of the Objective Function for S\&P500 Returns}
+\chapter{Apparent Concavity of the Objective Function for S\&P500 Returns} \label{ChapterSP_I}
 
-
+\section{Statement Description}
 \subsection{Why Using $W=\Sigma^{-1}$ Changed Everything}
 
-As presented in Figure \ref{SP500_returns_criterion_W} and explained in Section 1.2.2 when using $W=\Sigma^{-1}$ the second moment condition is somewhat completely ignored due to the size of the fourth moment's variance (i.e. the weight of the second moment condition is insignificant compared to that of the second moment).
+As presented in Figure \ref{SP500_returns_criterion_W} and explained in Section \ref{SectionCriterionSP500_W} when using $W=\Sigma^{-1}$ the second moment condition is somewhat completely ignored due to the size of the fourth moment's variance (i.e. the weight of the second moment condition is insignificant compared to that of the second moment).
 \smallskip\par
-However, when using $W=I$ (Figure \ref{SP500_returns_criterion_W}), we assign the same weight to both conditions (Which is incidentally why inverting the conditions has not changed the $O_f$ for $W=I$). This is why the shape of the $O_f$ is completely different depending on the weights used.
+However, when using $W=I$ (Figure \ref{SP500_returns_criterion_W}), we assign the same weight to both conditions (Which is incidentally why inverting the conditions has not changed the $O_f$ for $W=I$). This is why the shape of the $O_f$ is significantly different depending on the weights used.
 \smallskip\par
 In the following Sections we will analyse the objective function when using equal weights and attempt to explain its behaviour.
 
@@ -34,14 +34,14 @@ We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (Fo
 \begin{figure}
     \centering
     \includegraphics[width=0.95\textwidth]{ConcavityS&PI.pdf}
-    \caption{Objective function of the $\nu$ parameter for S\&P500 returns using $W=I$}
+    \caption{Continuous $O_f$ of the $\nu$ parameter for S\&P500 returns using $W=I$}
     \label{ConcavitySPI}
 \end{figure}
 \par
 First of all the function now appears to be convex from $4$ to roughly $4.4$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
 \par
 The empirical optimal value for which the $O_f$ is minimised is $\nu=4.2$. 
-This can easily be verified by computing the first derivative of the objective function for our specific case:
+This can easily be verified by computing the first derivative of the objective function for our specific case (Functions plot in Figure \ref{Derivatives}):
 \begin{equation}\label{ObjectiveFunction_I}
     O_f = \left[E\left[X^4\right] - \left(\frac{6}{\nu-4}+3\right)\cdot         
                 E^2\left[X^2\right]\right]^2 +
@@ -65,15 +65,15 @@ Therefore implying the optimal value of $\nu$ to fit our distribution of scaled 
 
 \subsection{Local Convexity \& Concavity of the $O_f$}
 
-After having addressed the question of the "true" local minimum of the function, we now turn to the apparent concavity of the $O_f$ as presented in Figure \ref{SP500_returns_criterion_I} when using $W=I$ \bigskip\par
-Using the objective function described by Equation \ref{ObjectiveFunction_I} and the empirical values used to compute the first derivative (Equation \ref{FirstDerivativeOf_Of_I}) we can also derive the second derivative of the $O_f$ :
+After having addressed the question of the "true" local minimum of the function, we now turn to the apparent concavity of the $O_f$ as presented in Figure 1.5 when using $W=I$. \bigskip\par
+Using the objective function described by Equation \ref{ObjectiveFunction_I} and the empirical values used to compute the first derivative (Equation \ref{FirstDerivativeOf_Of_I}) we can also derive the second derivative of the $O_f$ (Functions plot in Figure \ref{Derivatives}) :
 \begin{equation}\label{SecondDerivativeOf_Of_I}
     \pdv[2]{O_f}{\nu} =  \frac{-715.808 \nu^5 + 8829.54 \nu^4 - 42196 \nu^3 + 99107.5 \nu^2 - 116127 \nu + 55408.8}{(\nu - 4)^4 (\nu - 2)^4}
 \end{equation}
 
 If we solve for $\pdv[2]{O_f}{\nu} = 0$ we obtain a single real root: $\nu^{**} \approx 4.30156$ indicating a point of inflexion of the $O_f$ at $\nu^{**}$ 
 \smallskip \par
-In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$ are shown in Figure \ref{SecondDerivativePlot_I}:
+In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$
 \begin{equation*}
     \begin{cases}
         O_f^{''} > 0 \; , \; \nu \in \; ]-\infty;2[ \\
@@ -89,6 +89,15 @@ In addition, let $O_f^{''}=\pdv[2]{O_f}{\nu}$ , results for $\nu \in \; [2;5.5]$
 Therefore the $O_f$ is convex between $4$ and $\nu^{**} \approx 4.30156$ so the local minimum of the function calculated in (Equation \ref{FirstDerivativeOf_Of_I}) is situated on the convex portion.
 \smallskip\par
 In contrast, from $\nu^{**} \approx 4.30156$ to $\infty$ the $O_f$ is strictly concave which is why it appeared concave in Figure \ref{SP500_returns_criterion_I} since the range used was $\{5:30\}$
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{Derivatives.pdf}
+    \caption{$O_f$ and Derivatives for S\&P500 Returns \& Equal Weights $[0;6]$}
+    \label{Derivatives}
+    \includegraphics[width=0.7\textwidth]{Derivatives_Zoom.pdf}
+    \caption{$O_f$ and Derivatives for S\&P500 Returns \& Equal Weights $[4;6]$}
+\end{figure}
 
 \section{Generalisation and Further Development}
 
@@ -110,4 +119,19 @@ When allowing $\nu$ to take non-integer values we "denature" the idea of a degre
 \smallskip\par
 We usually think of degrees of freedom as the number of free parameters, but there are situations where the parameters are not completely free and they can then be difficult to count. This can happen when smoothing / regularizing, for example. This could possibly refer to the Welch–Satterthwaite equation.
 
-\subsection{Reconnecting with Integer degrees of Freedom}
+\newpage
+
+\subsection{Reconciling with Integer Degrees of Freedom}
+If we go back to our original assumption that degrees of freedom can only take integer values, we can use the fact that the $O_f$ is strictly decreasing from 4 to $\nu^*$ and strictly increasing from $\nu^*$ to $\infty$ to establish that the optimal $\nu$ that satisfies the integer constraint must be either directly to the left or directly to the right of $\nu^*$. Therefore either 4 or 5, and 4 being excluded from the domain of the objective function, the only other option is 5, consistent with the result found in Section \ref{SectionCriterionSP500_I}
+
+\chapter{Conclusion}
+
+What should be taken from this analysis can be summarised as follows:
+\begin{itemize}
+
+\item The sample size plays a big role in the estimation of the parameter. For t-returns a larger sample size results in a lower variance of the estimator of the parameter.
+\item Weighing the moment conditions with their covariance matrix when computing the objective function can drastically change the resulting optimal parameter for a given data-set (S\&P500 returns in this case).
+\item If the variance of the kurtosis of a certain data-set is too large, the shape of the tails is somewhat ignored when trying to fit a distribution (Thankfully !).
+\item S\&P500 returns may be normally distributed, however the relatively poor fit of the Normal Distribution to the data suggests one of two things: either the sample size is just too small and therefore the fatness of the tails is under-estimated; \emph{and/or} the returns simply do not follow a Student or Normal Distribution.
+
+\end{itemize}

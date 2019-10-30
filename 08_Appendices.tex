@@ -1,15 +1,13 @@
 \begin{appendices}
 
-\chapter{R-code - Exercise 1}
+\chapter{R-File - Exercise 1}
 
 \begin{verbatim}
 # PART 1.1
 # sampling t-distributed observations
 returns=rt(10000,10)
-
 # Creating a criterion function with W=I
-criterion_I<-function(para,x)
-  {
+criterion_I<-function(para,x) {
     nu=para
     cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
     cond2=mean(x^2)-(nu/(nu-2))
@@ -19,8 +17,7 @@ criterion_I<-function(para,x)
   }
 
 # Creating a criterion function with the full W
-criterion_W<-function(para,x)
-  {
+criterion_W<-function(para,x) {
     nu=para
     cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
     cond2=mean(x^2)-(nu/(nu-2))
@@ -29,18 +26,13 @@ criterion_W<-function(para,x)
     return(output%*%solve(W)%*%t(output))
   }
 
-
-
 # Setting a potential list of candidate estimates
 para_list=seq(5,30,by=1)
-
-
 
 #USING IDENTITY
 # Computing the criterion function for each estimate...
 output_1=c()
-for (i in 1:length(para_list))
-  {
+for (i in 1:length(para_list)) {
     output_1=c(output_1,criterion_I(para_list[i],returns))
   }
 
@@ -48,13 +40,14 @@ for (i in 1:length(para_list))
 minimum_1=para_list[which(output_1==min(output_1))]
 print(minimum_1)
 
-
 #... and then graph them!
 pdf(file="t-returns_criterion_(W=I).pdf")
-plot(para_list,output_1,type="l",xlab="nu",ylab="Criterion",main="W=I")
+plot(para_list,output_1,type="l",xlab="nu",ylab="Criterion",
+main="W=I")
 abline(v=minimum_1, col="purple", lty=2)
 abline(v=10,col="red")
-legend("topright", c("Estimated", "True Value"),col=c("purple","red"), lty=2:1, cex=1.0 )
+legend("topright", c("Estimated", "True Value"),
+col=c("purple","red"),lty=2:1, cex=1.0 )
 dev.off()
 
 # And charting the resulting density
@@ -67,8 +60,7 @@ dev.off()
 # USING COVARIANCE MATRIX
 # Computing the criterion function for each estimate...
 output_2=c()
-for (i in 1:length(para_list))
-{
+for (i in 1:length(para_list)) {
   output_2=c(output_2,criterion_W(para_list[i],returns))
 }
 
@@ -76,28 +68,27 @@ for (i in 1:length(para_list))
 minimum_2=para_list[which(output_2==min(output_2))]
 print(minimum_2)
 
-
 #... and then graph them!
 pdf(file="t-returns_criterion_(W=Sigma^-1).pdf")
 plot(para_list,output_2,type="l",xlab="nu",
      ylab="Criterion",main="W=Cov(x)")
 abline(v=minimum_2, col="purple",lty=2)
 abline(v=10,col="red")
-legend("topright", c("Estimated", "True Value"),col=c("purple","red"), lty=2:1, cex=1.0 )
+legend("topright", c("Estimated", "True Value"),
+col=c("purple","red"),lty=2:1, cex=1.0 )
 dev.off()
-
 
 # And charting the resulting density
 pdf(file="t-returns_density_(W=Sigma^-1).pdf")
 temp=density(scale(returns))
-plot(temp, type="l", ylab="Density", main="t-returns density (W=Sigma^-1)")
+plot(temp, type="l", ylab="Density", main="t-returns density
+(W=Sigma^-1)")
 lines(temp$x,dt(temp$x,minimum_2),col="red")
 dev.off()
-
-
 \end{verbatim}
 
-\newpage
+\chapter{R-File - Exercise 2}
+
 \begin{verbatim}
 # PART 1.2
 x=read.delim("sp.csv",sep=";",header=FALSE)
@@ -107,8 +98,7 @@ x=diff(as.matrix(log(x)),1)
 returns=(x-mean(x))/sd(x)
        
 # Creating a criterion function with W=I
-criterion_I<-function(para,x)
- {
+criterion_I<-function(para,x) {
    nu=para
    cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
    cond2=mean(x^2)-(nu/(nu-2))
@@ -118,8 +108,7 @@ criterion_I<-function(para,x)
  }
        
 # Creating a criterion function with the full W
-criterion_W<-function(para,x)
- {
+criterion_W<-function(para,x) {
    nu=para
    cond2=mean(x^2)-(nu/(nu-2))
    cond1=mean(x^4)-((6)/(nu-4)+3)*mean(x^2)^2
@@ -130,16 +119,12 @@ criterion_W<-function(para,x)
 
 W=cov(cbind(x^2,x^4))
 W
-       
-# Setting a potential list of candidate estimates
 para_list=seq(5,30,by=1)
-
 
 #USING IDENTITY MATRIX
 # Computing the criterion function for each estimate...
 output_3=c()
-for (i in 1:length(para_list))
- {
+for (i in 1:length(para_list)) {
    output_3=c(output_3,criterion_I(para_list[i],returns))
  }
        
@@ -149,47 +134,115 @@ print(minimum_3)
 
 #... and then graph them!
 pdf(file="S&P500_returns_criterion_(W=I).pdf")
-plot(para_list,output_3,type="l",xlab="nu",ylab="Criterion",main="W=I")
+plot(para_list,output_3,type="l",xlab="nu",ylab="Criterion"
+,main="W=I")
 abline(v=minimum_3, col="purple",lty=2)
-legend("bottomright", c("Estimated"),col=c("purple"), lty=2, cex=1.0 )
+legend("bottomright", c("Estimated"),col=c("purple"),
+lty=2, cex=1.0 )
 dev.off()
 
-       
 # And charting the resulting density
 pdf(file="S&P500_returns_density_(W=I).pdf")
 temp=density(scale(returns))
-plot(temp, type="l", ylab="Density", main="S&P500 returns density (W=I)")
+plot(temp, type="l", ylab="Density", main="S&P500 returns
+density (W=I)")
 lines(temp$x,dt(temp$x,minimum_3),col="red")       
 dev.off()
-
 
 # USING COVARIANCE MATRIX
 # Computing the criterion function for each estimate...
 output_4=c()
-for (i in 1:length(para_list))
- {
+for (i in 1:length(para_list)) {
    output_4=c(output_4,criterion_W(para_list[i],returns))
  }
-
 
 # Finding the minimum value
 minimum_4=para_list[which(output_4==min(output_4))]
 print(minimum_4)
 
-
-#... and then graph them!
 pdf(file="S&P500_returns_criterion_(W=Sigma^-1).pdf")
-plot(para_list,output_4,type="l",xlab="nu",ylab="Criterion",main="W=Cov(x)")
+plot(para_list,output_4,type="l",xlab="nu",ylab="Criterion",
+main="W=Cov(x)")
 abline(v=minimum_4, col="purple",lty=2)
 legend("top", c("Estimated"),col=c("purple"), lty=2, cex=1.0 )
 dev.off()
 
-
-# And charting the resulting density
 pdf(file="S&P500_returns_density_(W=Sigma^-1).pdf")
 temp=density(scale(returns))
-plot(temp, type="l", ylab="Density", main="S&P500 returns density (W=Sigma^-1)")
+plot(temp, type="l", ylab="Density", main="S&P500 returns
+density (W=Sigma^-1)")
 lines(temp$x,dt(temp$x,minimum_4),col="red")       
 dev.off()
 \end{verbatim}
+
+\chapter{Plotting Derivatives}
+
+\begin{verbatim}
+####################################################################
+# Marceau Plotting Stuff & Shit
+####################################################################
+
+# Preparing Data
+
+setwd("/Users/marceau/Desktop/HEC_BA/MA1/DataScience_For_Finance/")
+
+y=read.delim("SP500_data.csv",sep=";",header=FALSE)
+
+y=y[,2]
+y=diff(as.matrix(log(y)),1)
+returns=(y-mean(y))/sd(y)
+
+a=mean(returns^4)
+b=mean(returns^2)
+
+f<-expression((a-(6/(x-4)+3)*b^2)^2+(b-x/(x-2))^2)
+ff<-D(f,"x")
+fff<-D(ff,"x")
+
+f
+ff
+fff
+
+g<-function(x){(((a-(6/(x-4)+3)*b^2)^2+(b-x/(x-2))^2))}
+gg<-function(x){(2 * (6/(x - 4)^2 * b^2 * (a - (6/(x - 4)
+                  + 3) * b^2)) - 2 * ((1/(x - 2) - x/(x -
+                  2)^2) * (b - x/(x - 2))))}
+ggg<-function(x){(2 * (6/(x - 4)^2 * b^2 * (6/(x - 4)^2 *
+                  b^2) - 6 * (2 * (x - 4))/((x - 4)^2)^2
+                  * b^2 * (a - (6/(x - 4) + 3) * b^2)) +
+                  2 * ((1/(x - 2) - x/(x - 2)^2) * (1/(x
+                  - 2) - x / (x - 2)^2) + (1/(x - 2)^2 +
+                  (1/(x - 2)^2 - x * (2 * (x - 2))/((x -
+                  2)^2)^2)) * (b - x/(x - 2))))}
+
+xlim_1 = 1
+xlim_2 = 6
+ylim_1 = -7000
+ylim_2 = 14000
+num = 1000
+  
+pdf(file="Derivatives.pdf")
+plot(g, from = xlim_1, to = xlim_2, n = num,
+      ylim = c(ylim_1,ylim_2),
+      xlab = "Parameter Value", ylab = "Objective Function",
+      col = "blue", lwd = 1,
+      main = "Objective Function & Derivatives for W=I")
+      legend("topright", c("Objective Function",
+                           "First Derivative", "Second Derivative"),
+      col=c("blue", "red", "green"), lty=1, cex=0.7 )
+par(new = TRUE)
+plot(gg, from = xlim_1, to = xlim_2, n = num,
+      ylim = c(ylim_1,ylim_2),
+      axes = FALSE, xlab = "", ylab = "",
+      col = "red", lwd = 1)
+par(new = TRUE)
+plot(ggg, from = xlim_1, to = xlim_2, n = num,
+      ylim = c(ylim_1,ylim_2),
+      axes = FALSE, xlab = "", ylab = "",
+      col = "green", lwd = 1)
+abline(h=0, col="black",lty=1 , lwd = 0.5)
+dev.off()
+\end{verbatim}
+
+
 \end{appendices}
