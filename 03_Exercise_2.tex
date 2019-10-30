@@ -1,7 +1,7 @@
 \newpage
 \section{Create two functions in R and compute the GMM with the S\&P500 returns}
 
-Adopting the exact same approach as previously, moment conditions are defined as follows:
+Adopting the exact same approach as previous, moment conditions are defined as follows:
 \begin{equation*}
     Y=    
     \begin{bmatrix}[l]
@@ -10,7 +10,7 @@ Adopting the exact same approach as previously, moment conditions are defined as
     \end{bmatrix}
 \end{equation*}
 
-The function will then return the scalar resulting from the quadratic form $Y^TWY$. However, in this particular case we used the S\&P500 sample of returns instead of randomly generated ones; the methodology will be exactly the same: minimizing the moment conditions with respect to $\nu$. The following quadratic form is solved for different parameter candidates and two weight matrices ($W=I$ and $W=\Sigma^{-1}$.
+The function returns the scalar resulting from the quadratic form $Y^TWY$. However, in this particular case, the S\&P500 sample of returns is used. The methodology is the same as before: minimizing the moment conditions with respect to $\nu$. The following quadratic form is solved for different parameter candidates and two weight matrices ($W_1=I$ and $W_2=\Sigma^{-1}$).
 \begin{equation*}
     Y^TWY
 \end{equation*}
@@ -27,7 +27,7 @@ The function will then return the scalar resulting from the quadratic form $Y^TW
     \end{bmatrix}
 \end{equation*}
 
-Running the code for the two cases generate a vector containing the output of the minimization problem for every parameter $\nu$ employed. Recall that by the first moment condition $\nu>4$ therefore a parameter list of the following form is set: $\nu_i \in \{5:30\}$. The goal is to find the parameter $\nu$ for which the objective function, i.e. criterion, is minimized, the resulting plots are listed on the following page.
+Running the code for the two cases generate a vector containing the output of the minimization problem for every parameter $\nu$ employed. Recall that by the first moment condition $\nu>4$ therefore a parameter list of the following form is set: $\nu_i \in \{5:30\}$. The goal is to find the parameter $\nu$ for which the objective function, i.e. criterion, is minimized, Figures 1.5 and 1.6 illustrate the result.
 \bigskip\par
 The data used in the exercise gives an estimated $\nu$ of:
 \begin{equation*}
@@ -42,10 +42,10 @@ Estimates differ depending on the weight matrix involved in the optimization pro
 
 
 \subsection{W=I}
-Why is the convexity apparently disappeared ? The criterion function has a minimum at $\nu_1=5$ and trying to run the code while changing the candidates list to $\nu_i \in \{5:30\}$ won't change the result: the minimum will always be at the first candidate tested. Chapter 2 aims to provide an explanation to this phenomenon.
+Why is the convexity apparently disappeared ? The criterion function has a minimum at $\nu_1=5$ and trying to run the code while changing the candidates list to $\nu_i \in \{6:30\}$ won't change the result: the minimum will always be at the first candidate tested. Chapter 2 aims to provide an explanation to this phenomenon.
 
 \subsection{W=$\Sigma^{-1}$}
-At first sight it seems correct to have convexity, the problem here is that we have a minimum for the exactly last candidate. Expanding the list of candidates from $\nu_i \in \{5:30\}$ to $\nu_i \in \{5:1000\}$ won't change the outcome, in this case the minimum would be at $\nu=1000$. To understand the phenomenon, the covariance matrix has to be analyzed.
+At first sight it seems correct to have convexity, the problem here is that the minimum is reached when running the optimization using the exact last candidate. Expanding the list of candidates from $\nu_i \in \{5:30\}$ to $\nu_i \in \{5:1000\}$ won't change the outcome, in this case the minimum would be at $\nu=1000$. To understand the phenomenon, the covariance matrix has to be analyzed.
 \begin{equation*}
     W=\Sigma=
     \begin{bmatrix}[l]
@@ -67,10 +67,11 @@ Notice that the variance associated to the second moment condition is 89170.3483
 \end{equation*}
 By using this approach the output almost fully depends on the second moment, the weight associated to the fourth moment is in fact almost negligible. The second moment condition (fourth moment) barely influences the optimization problem while solving the quadratic form and, as a result, the output function asymptotically tends to 0 when the parameter increases.
 
+\subsection{Estimated vs. theoretical density functions}
+Figure 1.7 compares the estimated density function based on the SP500 data using the $I$ as the weighting matrix with the theoretical Student t-distribution with 5 degrees of freedom, since we found that $df=5$ gave the estimated minimum of the distance function. Figure 1.8 compares the estimated density function based on the SP500 data using the covariance matrix between the two moment conditions as the weighting matrix with the theoretical Student t-distribution with 30 degrees of freedom, which again gave us the estimated minimum of our objective function. In both cases our estimate seems to be unbiased, centered around 0, but from the real dataset (black line) we get a taller and skinnier distribution than the theoretical distribution (red line). We could use statistical test, for example $\chi^2$ test to see whether there is significant difference between the two densities.
 
 
 
-\newpage
 
 \begin{figure}
     \centering
@@ -81,9 +82,6 @@ By using this approach the output almost fully depends on the second moment, the
     \label{SP500_returns_criterion_W}
     \caption{Output distribution as a function of the candidates $\nu$ using $W=\Sigma^{-1}$}
 \end{figure}
-
-\subsection{Estimated vs. theoretical density functions}
-Figure \ref{SP500_returns_density_I} compares the estimated density function based on the SP500 data using the $I$ as the weighting matrix with the theoretical Student t-distribution with 5 degrees of freedom, since we found that $df=5$ gave the estimated minimum of the distance function. Figure \ref{SP500_returns_density_W} compares the estimated density function based on the SP500 data using the covariance matrix between the two moment conditions as the weighting matrix with the theoretical Student t-distribution with 30 degrees of freedom, which again gave us the estimated minimum of our objective function. In both cases our estimate seems to be unbiased, centered around 0, but from the real dataset (black line) we get a taller and skinnier distribution than the theoretical distribution (red line). We could use statistical test, for example $\chi^2$ test to see whether there is significant difference between the two densities.
 
 \begin{figure}
     \centering

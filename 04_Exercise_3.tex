@@ -3,7 +3,7 @@
 
 \subsection{Why Using $W=\Sigma^{-1}$ Changed Everything}
 
-As presented in Figure \ref{SP500_returns_criterion_W} and explained in Section 1.2.2 when using $W=\Sigma^{-1}$ the fourth moment condition is somewhat completely ignored due to the size of the fourth moment's variance (i.e. the weight of the fourth moment condition is insignificant compared to that of the second moment).
+As presented in Figure \ref{SP500_returns_criterion_W} and explained in Section 1.2.2 when using $W=\Sigma^{-1}$ the second moment condition is somewhat completely ignored due to the size of the fourth moment's variance (i.e. the weight of the second moment condition is insignificant compared to that of the second moment).
 \smallskip\par
 However, when using $W=I$ (Figure \ref{SP500_returns_criterion_W}), we assign the same weight to both conditions (Which is incidentally why inverting the conditions has not changed the $O_f$ for $W=I$). This is why the shape of the $O_f$ is completely different depending on the weights used.
 \smallskip\par
@@ -38,7 +38,7 @@ We now set $\nu \in \; ]4;30]$ and run the exact same analysis as previously (Fo
     \label{ConcavitySPI}
 \end{figure}
 \par
-Complete fucking game-changer boys ! First of all the function now appears to be convex from $4$ to roughly $4.4$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
+First of all the function now appears to be convex from $4$ to roughly $4.4$ and only then does it take on a concave appearance. And secondly the objective function seems to be minimised by a unique value of $\nu$ that is not a boundary of domain.
 \par
 The empirical optimal value for which the $O_f$ is minimised is $\nu=4.2$. 
 This can easily be verified by computing the first derivative of the objective function for our specific case:
