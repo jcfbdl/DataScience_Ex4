@@ -5,8 +5,8 @@ Adopting the exact same approach as previously, moment conditions are defined as
 \begin{equation*}
     Y=    
     \begin{bmatrix}[l]
-    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
-    E[X^2]-\frac{\nu}{\nu-2}
+    E[X^2]-\frac{\nu}{\nu-2} \\
+    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)
     \end{bmatrix}
 \end{equation*}
 
@@ -55,17 +55,17 @@ At first sight it seems correct to have convexity, the problem here is that we h
 \end{equation*}
 Notice that the variance associated to the second moment condition is 89170.3483 times bigger than the variance associated to the second moment condition. The problem comes when we calculate the optimum function, in order to compute the output we have to invert $\Sigma$, therefore $\Sigma^{-1}$ is:
 \begin{equation*}
-    W=\Sigma=
+    W^{-1}=\Sigma^{-1}=
     \begin{bmatrix}[l]
         \frac{1}{31.84035}    &\frac{1}{8250.907} \\
         \frac{1}{8250.90722}  &\frac{1}{2839215.102}
         \end{bmatrix}=
     \begin{bmatrix}[l]
-        0.1271814035    &-3.695958*10^{-4} \\
-        -0.0003695958    &1.426275*10^{-06}
+        0.1271814035    &-3.695958\mathrm{e}{-04} \\
+        -0.0003695958    &1.426275\mathrm{e}{-06}
     \end{bmatrix}
 \end{equation*}
-
+By using this approach the output almost fully depends on the second moment, the weight associated to the fourth moment is in fact almost negligible. The second moment condition (fourth moment) barely influences the optimization problem while solving the quadratic form and, as a result, the output function asymptotically tends to 0 when the parameter increases.
 
 
 

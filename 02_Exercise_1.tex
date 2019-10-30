@@ -59,6 +59,10 @@ While using GMM we’re essentially confronted with an optimization problem in w
     E[X^4]=E^2[X^2](3+\frac{6}{\nu-4})
 \end{equation*}
 
+\subsubsection{Terminology}
+Notice that moments in the vector $Y$ are ranked by increasing order. The exercise requires the use of two moment conditions, please be aware that the term "\textit{first moment condition}" refers to the second moment $E[X^2]$, whereas the term "\textit{second moment condition}" refers to the fourth moment $E[X^4]$.
+
+
 
 \newpage
 
@@ -69,8 +73,8 @@ The function takes the following inputs: a parameter $\nu$ and the randomly gene
 \begin{equation*}
     Y=    
     \begin{bmatrix}[l]
-    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
-    E[X^2]-\frac{\nu}{\nu-2}
+    E[X^2]-\frac{\nu}{\nu-2} \\
+    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)
     \end{bmatrix}
 \end{equation*}
 The function will then return the scalar resulting from the quadratic form $Y^TWY$. In this case we want the weight matrix W to be equal to the identity matrix therefore the quadratic form reduces to $Y^TY$.
@@ -81,8 +85,8 @@ The function takes the following inputs: a parameter $\nu$ and the randomly gene
 \begin{equation*}
     Y=    
     \begin{bmatrix}[l]
-    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)  \\
-    E[X^2]-\frac{\nu}{\nu-2}
+    E[X^2]-\frac{\nu}{\nu-2} \\
+    E[X^4]-E[X^2]^2(\frac{6}{\nu-4}+3)
     \end{bmatrix}
 \end{equation*}
 The function will then return the scalar resulting from the quadratic form $Y^T W Y$. In this second case the weight matrix corresponds to inverse of the covariance matrix between moments, i.e.
