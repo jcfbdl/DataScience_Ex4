@@ -78,6 +78,9 @@ Notice that the variance associated to the second moment condition is 89170.3483
     \caption{Output distribution as a function of the candidates $\nu$ using $W=\Sigma^{-1}$}
 \end{figure}
 
+\subsection{Estimated vs. theoretical density functions}
+Figure \ref{SP500_returns_density_I} compares the estimated density function based on the SP500 data using the $I$ as the weighting matrix with the theoretical Student t-distribution with 5 degrees of freedom, since we found that $df=5$ gave the estimated minimum of the distance function. Figure \ref{SP500_returns_density_W} compares the estimated density function based on the SP500 data using the covariance matrix between the two moment conditions as the weighting matrix with the theoretical Student t-distribution with 30 degrees of freedom, which again gave us the estimated minimum of our objective function. In both cases our estimate seems to be unbiased, centered around 0, but from the real dataset (black line) we get a taller and skinnier distribution than the theoretical distribution (red line). We can explain this either with the bigger sample size of the real data set ($n_{real}=5854$ vs. $n_{theoretical}=512$) or it might be the case that the real data do not follow the t-distribution.    
+
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{S&P500_returns_density_(W=I).pdf}
